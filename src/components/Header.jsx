@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Menu, Search, Bell, User } from 'lucide-react'
+import { Menu, Search, Bell, User, Bot, Database } from 'lucide-react'
 
 const Header = ({ onMenuClick }) => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -40,6 +40,10 @@ const Header = ({ onMenuClick }) => {
                 </div>
               </div>
             </div>
+            <div className="ml-3 hidden sm:block">
+              <div className="text-sm text-accent-cyan font-medium">Autonomous AI News</div>
+              <div className="text-xs text-text-muted">Powered by BNB Chain</div>
+            </div>
           </Link>
         </div>
 
@@ -71,6 +75,9 @@ const Header = ({ onMenuClick }) => {
             </button>
             <button className="bg-transparent border border-border text-text-secondary p-2 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-center hover:bg-accent-cyan/10 hover:border-accent-cyan hover:text-accent-cyan">
               <User size={20} />
+            </button>
+            <button className="bg-accent-cyan/10 border border-accent-cyan/20 text-accent-cyan p-2 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-center hover:bg-accent-cyan hover:text-primary-bg">
+              <Database size={20} />
             </button>
           </div>
         </div>

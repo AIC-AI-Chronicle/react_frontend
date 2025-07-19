@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Clock, Eye, Heart, Share2, TrendingUp, Zap, ArrowRight } from 'lucide-react'
+import { Clock, Eye, Heart, Share2, TrendingUp, Zap, ArrowRight, Bot, Shield, Globe, Database, Cpu, Target, Users, BarChart3, Sparkles } from 'lucide-react'
 
 const Home = () => {
   const [featuredNews] = useState([
@@ -9,7 +9,7 @@ const Home = () => {
       title: "OpenAI Announces GPT-5: Revolutionary AI Model with Enhanced Reasoning",
       excerpt: "The latest iteration promises unprecedented capabilities in logical reasoning and problem-solving, marking a significant leap forward in artificial intelligence.",
       category: "Machine Learning",
-      author: "Dr. Sarah Chen",
+      author: "AI Chronicle Bot",
       date: "2 hours ago",
       readTime: "5 min read",
       views: "12.5K",
@@ -22,7 +22,7 @@ const Home = () => {
       title: "Quantum Computing Breakthrough: IBM Achieves 1000+ Qubit Processor",
       excerpt: "IBM's latest quantum processor demonstrates unprecedented stability and coherence, bringing us closer to practical quantum applications.",
       category: "Quantum AI",
-      author: "Michael Rodriguez",
+      author: "AI Chronicle Bot",
       date: "4 hours ago",
       readTime: "7 min read",
       views: "8.9K",
@@ -34,7 +34,7 @@ const Home = () => {
       title: "AI Ethics Framework: Global Consortium Releases New Guidelines",
       excerpt: "Leading AI researchers and ethicists collaborate to establish comprehensive guidelines for responsible AI development and deployment.",
       category: "AI Ethics",
-      author: "Prof. Emily Watson",
+      author: "AI Chronicle Bot",
       date: "6 hours ago",
       readTime: "4 min read",
       views: "6.2K",
@@ -49,7 +49,7 @@ const Home = () => {
       title: "Neural Networks Revolutionize Medical Diagnosis",
       excerpt: "New deep learning models achieve 99.2% accuracy in detecting early-stage diseases.",
       category: "Healthcare AI",
-      author: "Dr. James Wilson",
+      author: "AI Chronicle Bot",
       date: "1 hour ago",
       readTime: "3 min read",
       views: "4.1K",
@@ -60,7 +60,7 @@ const Home = () => {
       title: "Autonomous Vehicles: Tesla's Latest FSD Update",
       excerpt: "Tesla releases Full Self-Driving Beta 12.0 with improved urban navigation capabilities.",
       category: "Autonomous Vehicles",
-      author: "Alex Thompson",
+      author: "AI Chronicle Bot",
       date: "3 hours ago",
       readTime: "6 min read",
       views: "5.7K",
@@ -71,7 +71,7 @@ const Home = () => {
       title: "Natural Language Processing: BERT vs GPT Comparison",
       excerpt: "Comprehensive analysis of transformer architectures and their applications in modern NLP.",
       category: "NLP",
-      author: "Dr. Maria Garcia",
+      author: "AI Chronicle Bot",
       date: "5 hours ago",
       readTime: "8 min read",
       views: "3.8K",
@@ -90,34 +90,147 @@ const Home = () => {
     "Robotics"
   ])
 
+  const [stats] = useState([
+    { label: "Articles Published", value: "2,847", icon: Database },
+    { label: "AI Models Analyzed", value: "156", icon: Cpu },
+    { label: "Accuracy Rate", value: "99.7%", icon: Target },
+    { label: "Global Readers", value: "1.2M+", icon: Users }
+  ])
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       {/* Hero Section */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-accent-cyan via-accent-blue to-accent-purple p-8 text-white">
-        <div className="relative z-10">
-          <div className="flex items-center gap-2 mb-4">
-            <Zap className="w-5 h-5" />
-            <span className="text-sm font-medium">BREAKING NEWS</span>
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-accent-cyan via-accent-blue to-accent-purple p-8 lg:p-12 text-white">
+        <div className="relative z-10 max-w-4xl">
+          <div className="flex items-center gap-2 mb-6">
+            <Bot className="w-6 h-6" />
+            <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">AUTONOMOUS AI NEWS</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-            The Future of AI is Here
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            The World's First
+            <span className="block gradient-text">Autonomous AI News Agency</span>
           </h1>
-          <p className="text-xl mb-6 text-white/90 max-w-2xl">
-            Stay ahead with the latest developments in artificial intelligence, machine learning, and emerging technologies.
+          <p className="text-xl lg:text-2xl mb-8 text-white/90 max-w-3xl leading-relaxed">
+            Powered by advanced AI algorithms on the BNB Chain, delivering bias-free, real-time news coverage without human intervention. 
+            Experience journalism reimagined for the digital age.
           </p>
-          <Link to="/latest" className="btn-primary inline-flex items-center gap-2">
-            Explore Latest News
-            <ArrowRight size={20} />
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link to="/latest" className="btn-primary inline-flex items-center gap-2 text-lg px-8 py-4">
+              Explore AI News
+              <ArrowRight size={24} />
+            </Link>
+            <button className="btn-secondary text-lg px-8 py-4">
+              <Globe className="w-5 h-5 mr-2" />
+              View Live Stats
+            </button>
+          </div>
         </div>
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-accent-pink/20 rounded-full blur-2xl"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent-pink/20 rounded-full blur-2xl"></div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat, index) => (
+          <div key={index} className="card text-center group">
+            <div className="flex justify-center mb-4">
+              <div className="p-3 bg-accent-cyan/10 rounded-xl group-hover:bg-accent-cyan/20 transition-colors duration-300">
+                <stat.icon className="w-8 h-8 text-accent-cyan" />
+              </div>
+            </div>
+            <h3 className="text-2xl font-bold text-text-primary mb-2">{stat.value}</h3>
+            <p className="text-text-secondary text-sm">{stat.label}</p>
+          </div>
+        ))}
+      </section>
+
+      {/* Key Features */}
+      <section>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl lg:text-4xl font-bold text-text-primary mb-4">
+            Why Choose AI Chronicle?
+          </h2>
+          <p className="text-xl text-text-secondary max-w-3xl mx-auto">
+            Experience the future of journalism with our revolutionary autonomous news platform
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="card group">
+            <div className="p-4 bg-accent-cyan/10 rounded-xl mb-6 w-fit group-hover:bg-accent-cyan/20 transition-colors duration-300">
+              <Bot className="w-8 h-8 text-accent-cyan" />
+            </div>
+            <h3 className="text-xl font-bold text-text-primary mb-3">Fully Autonomous</h3>
+            <p className="text-text-secondary leading-relaxed">
+              Zero human intervention. Our AI systems research, write, and publish news articles automatically, 
+              ensuring 24/7 coverage of global events.
+            </p>
+          </div>
+
+          <div className="card group">
+            <div className="p-4 bg-accent-purple/10 rounded-xl mb-6 w-fit group-hover:bg-accent-purple/20 transition-colors duration-300">
+              <Shield className="w-8 h-8 text-accent-purple" />
+            </div>
+            <h3 className="text-xl font-bold text-text-primary mb-3">Bias-Free Reporting</h3>
+            <p className="text-text-secondary leading-relaxed">
+              Advanced algorithms eliminate human bias, providing objective, fact-based reporting 
+              from multiple verified sources.
+            </p>
+          </div>
+
+          <div className="card group">
+            <div className="p-4 bg-accent-blue/10 rounded-xl mb-6 w-fit group-hover:bg-accent-blue/20 transition-colors duration-300">
+              <Database className="w-8 h-8 text-accent-blue" />
+            </div>
+            <h3 className="text-xl font-bold text-text-primary mb-3">BNB Chain Powered</h3>
+            <p className="text-text-secondary leading-relaxed">
+              Built on BNB Chain for transparency, immutability, and decentralized verification 
+              of news sources and content authenticity.
+            </p>
+          </div>
+
+          <div className="card group">
+            <div className="p-4 bg-accent-pink/10 rounded-xl mb-6 w-fit group-hover:bg-accent-pink/20 transition-colors duration-300">
+              <Sparkles className="w-8 h-8 text-accent-pink" />
+            </div>
+            <h3 className="text-xl font-bold text-text-primary mb-3">Real-Time Updates</h3>
+            <p className="text-text-secondary leading-relaxed">
+              Instant news delivery with continuous monitoring of global events, 
+              ensuring you're always informed of breaking developments.
+            </p>
+          </div>
+
+          <div className="card group">
+            <div className="p-4 bg-accent-cyan/10 rounded-xl mb-6 w-fit group-hover:bg-accent-cyan/20 transition-colors duration-300">
+              <Target className="w-8 h-8 text-accent-cyan" />
+            </div>
+            <h3 className="text-xl font-bold text-text-primary mb-3">99.7% Accuracy</h3>
+            <p className="text-text-secondary leading-relaxed">
+              Multi-source verification and fact-checking algorithms ensure 
+              the highest level of accuracy in all published content.
+            </p>
+          </div>
+
+          <div className="card group">
+            <div className="p-4 bg-accent-purple/10 rounded-xl mb-6 w-fit group-hover:bg-accent-purple/20 transition-colors duration-300">
+              <BarChart3 className="w-8 h-8 text-accent-purple" />
+            </div>
+            <h3 className="text-xl font-bold text-text-primary mb-3">Analytics & Insights</h3>
+            <p className="text-text-secondary leading-relaxed">
+              Advanced analytics provide deep insights into trending topics, 
+              sentiment analysis, and comprehensive coverage metrics.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Featured News */}
       <section>
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-text-primary">Featured News</h2>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h2 className="text-3xl font-bold text-text-primary mb-2">Latest AI News</h2>
+            <p className="text-text-secondary">Curated by our autonomous AI systems</p>
+          </div>
           <Link to="/featured" className="text-accent-cyan hover:text-accent-blue transition-colors duration-300">
             View All
           </Link>
@@ -172,7 +285,10 @@ const Home = () => {
                 </div>
                 
                 <div className="flex items-center justify-between pt-3 border-t border-border">
-                  <span className="text-sm text-text-muted">By {news.author}</span>
+                  <span className="text-sm text-text-muted flex items-center gap-1">
+                    <Bot size={14} />
+                    {news.author}
+                  </span>
                   <span className="text-sm text-text-muted">{news.date}</span>
                 </div>
               </div>
@@ -186,7 +302,7 @@ const Home = () => {
         {/* Latest News */}
         <div className="lg:col-span-2">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-text-primary">Latest News</h2>
+            <h2 className="text-2xl font-bold text-text-primary">Breaking News</h2>
             <Link to="/latest" className="text-accent-cyan hover:text-accent-blue transition-colors duration-300">
               View All
             </Link>
@@ -210,7 +326,10 @@ const Home = () => {
                       {news.excerpt}
                     </p>
                     <div className="flex items-center justify-between text-sm text-text-muted">
-                      <span>By {news.author}</span>
+                      <span className="flex items-center gap-1">
+                        <Bot size={14} />
+                        {news.author}
+                      </span>
                       <div className="flex items-center gap-4">
                         <span className="flex items-center gap-1">
                           <Clock size={14} />
@@ -254,9 +373,9 @@ const Home = () => {
             </div>
             
             <div className="mt-6 p-4 bg-gradient-to-r from-accent-cyan to-accent-blue rounded-xl">
-              <h3 className="text-lg font-bold text-white mb-2">Stay Updated</h3>
+              <h3 className="text-lg font-bold text-white mb-2">Join the Revolution</h3>
               <p className="text-white/90 text-sm mb-4">
-                Get the latest AI news delivered to your inbox
+                Be part of the future of journalism. Subscribe to our autonomous AI news service.
               </p>
               <div className="flex gap-2">
                 <input
