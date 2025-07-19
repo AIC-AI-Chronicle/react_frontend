@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Bot, ArrowLeft } from 'lucide-react'
+import { login as loginAPI } from '../api'
 
 const Login = ({ onLogin }) => {
   const navigate = useNavigate()
@@ -11,6 +12,7 @@ const Login = ({ onLogin }) => {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState({})
+  const [apiError, setApiError] = useState('')
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -18,49 +20,52 @@ const Login = ({ onLogin }) => {
       ...prev,
       [name]: value
     }))
-    // Clear error when user starts typing  
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
         [name]: ''
       }))
     }
+    if (apiError) setApiError('')
   }
 
   const validateForm = () => {
     const newErrors = {}
-    
     if (!formData.email) {
       newErrors.email = 'Email is required'
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email is invalid'
     }
-    
     if (!formData.password) {
       newErrors.password = 'Password is required'
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters'
     }
-    
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+    setApiError('')
     if (!validateForm()) {
       return
     }
-    
     setIsLoading(true)
-    
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const data = await loginAPI({
+        email: formData.email,
+        password: formData.password
+      })
+      // Save token to localStorage
+      localStorage.setItem('access_token', data.access_token)
       setIsLoading(false)
       onLogin()
       navigate('/')
-    }, 1500)
+    } catch (err) {
+      setIsLoading(false)
+      setApiError(err.message || 'Login failed')
+    }
   }
 
   return (
@@ -97,6 +102,11 @@ const Login = ({ onLogin }) => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
+            {apiError && (
+              <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-lg px-4 py-2 text-sm mb-2">
+                {apiError}
+              </div>
+            )}
             {/* Email Field */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-white mb-2">

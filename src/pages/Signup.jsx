@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Bot, ArrowLeft } from 'lucide-react'
+import { register as registerAPI } from '../api'
 
 const Signup = ({ onSignup }) => {
   const navigate = useNavigate()
@@ -16,6 +17,7 @@ const Signup = ({ onSignup }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState({})
   const [agreedToTerms, setAgreedToTerms] = useState(false)
+  const [apiError, setApiError] = useState('')
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -29,6 +31,7 @@ const Signup = ({ onSignup }) => {
         [name]: ''
       }))
     }
+    if (apiError) setApiError('')
   }
 
   const validateForm = () => {
@@ -70,18 +73,24 @@ const Signup = ({ onSignup }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+    setApiError('')
     if (!validateForm()) {
       return
     }
-    
     setIsLoading(true)
-    
-    setTimeout(() => {
+    try {
+      await registerAPI({
+        email: formData.email,
+        password: formData.password,
+        full_name: formData.firstName + ' ' + formData.lastName
+      })
       setIsLoading(false)
       onSignup()
       navigate('/')
-    }, 1500)
+    } catch (err) {
+      setIsLoading(false)
+      setApiError(err.message || 'Registration failed')
+    }
   }
 
   return (
@@ -114,6 +123,11 @@ const Signup = ({ onSignup }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {apiError && (
+              <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-lg px-4 py-2 text-sm mb-2">
+                {apiError}
+              </div>
+            )}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label htmlFor="firstName" className="block text-sm font-medium text-white mb-2">
