@@ -100,49 +100,73 @@ const Home = () => {
   return (
     <div className="space-y-12">
       {/* Hero Section */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-accent-cyan via-accent-blue to-accent-purple p-8 lg:p-12 text-white">
-        <div className="relative z-10 max-w-4xl">
-          <div className="flex items-center gap-2 mb-6">
-            <Bot className="w-6 h-6" />
-            <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">AUTONOMOUS AI NEWS</span>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-            The World's First
-            <span className="block gradient-text">Autonomous AI News Agency</span>
-          </h1>
-          <p className="text-xl lg:text-2xl mb-8 text-white/90 max-w-3xl leading-relaxed">
-            Powered by advanced AI algorithms on the BNB Chain, delivering bias-free, real-time news coverage without human intervention. 
-            Experience journalism reimagined for the digital age.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link to="/latest" className="btn-primary inline-flex items-center gap-2 text-lg px-8 py-4">
-              Explore AI News
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-black via-gray-900 to-green-900 p-8 lg:p-16 text-white">
+        <div className="relative z-10 max-w-6xl mx-auto">
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            {/* Logo and Brand Section */}
+            <div className="flex-1 text-center lg:text-left">
+              <div className="flex justify-center lg:justify-start mb-8">
+                <div className="relative">
+                  <img 
+                    src="/logo/logo.jpeg" 
+                    alt="AI Chronicle Logo" 
+                    className="w-32 h-32 lg:w-40 lg:h-40 rounded-2xl object-cover shadow-2xl border-4 border-white/20"
+                  />
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-green-400 to-green-500 rounded-full flex items-center justify-center">
+                    <Bot className="w-5 h-5 text-white" />
+                  </div>
+                </div>
+              </div>
+              
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                <span className="text-white">AI</span>
+                <span className="block bg-gradient-to-r from-green-400 via-green-500 to-green-600 bg-clip-text text-transparent">
+                  Chronicle
+                </span>
+              </h1>
+              
+              <p className="text-xl lg:text-2xl mb-8 text-gray-300 max-w-2xl leading-relaxed">
+                Your gateway to the latest AI innovations, breakthroughs, and insights. 
+                Stay informed with cutting-edge technology news and analysis.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                            <Link to="/latest" className="inline-flex items-center gap-3 bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:from-green-600 hover:to-green-700 hover:scale-105 shadow-lg">
+              Explore News
               <ArrowRight size={24} />
             </Link>
-            <button className="btn-secondary text-lg px-8 py-4">
-              <Globe className="w-5 h-5 mr-2" />
-              View Live Stats
-            </button>
-          </div>
-        </div>
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent-pink/20 rounded-full blur-2xl"></div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, index) => (
-          <div key={index} className="card text-center group">
-            <div className="flex justify-center mb-4">
-              <div className="p-3 bg-accent-cyan/10 rounded-xl group-hover:bg-accent-cyan/20 transition-colors duration-300">
-                <stat.icon className="w-8 h-8 text-accent-cyan" />
+                <button className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:bg-white/20 hover:scale-105">
+                  <Globe className="w-5 h-5" />
+                  Live Updates
+                </button>
               </div>
             </div>
-            <h3 className="text-2xl font-bold text-text-primary mb-2">{stat.value}</h3>
-            <p className="text-text-secondary text-sm">{stat.label}</p>
+
+            {/* Stats Section */}
+            <div className="flex-1">
+              <div className="grid grid-cols-2 gap-6">
+                {stats.map((stat, index) => (
+                  <div key={index} className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
+                    <div className="flex items-center gap-3 mb-3">
+                                        <div className="p-2 bg-gradient-to-r from-green-500 to-green-600 rounded-lg">
+                    <stat.icon className="w-6 h-6 text-white" />
+                  </div>
+                      <h3 className="text-2xl font-bold text-white">{stat.value}</h3>
+                    </div>
+                    <p className="text-gray-300 text-sm font-medium">{stat.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        ))}
+        </div>
+        {/* Background Elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-green-400/20 to-green-500/20 rounded-full blur-2xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-green-500/10 to-green-600/10 rounded-full blur-3xl"></div>
       </section>
+
+
 
       {/* Key Features */}
       <section>

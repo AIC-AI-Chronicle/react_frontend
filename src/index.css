@@ -73,7 +73,7 @@
   .nav-link::after {
     content: '';
     @apply absolute -bottom-0.5 left-1/2 w-0 h-0.5 transition-all duration-300 -translate-x-1/2;
-    background: linear-gradient(135deg, #00d4ff 0%, #4facfe 25%, #8b5cf6 50%, #ec4899 100%);
+    background: linear-gradient(135deg, #00ff88 0%, #00cc66 25%, #00aa44 50%, #00ff66 100%);
   }
   
   .nav-link:hover::after {

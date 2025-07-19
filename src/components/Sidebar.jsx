@@ -41,7 +41,14 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-border">
-            <h2 className="gradient-text text-xl font-bold">AI Chronicle</h2>
+            <div className="flex items-center gap-3">
+              <img 
+                src="/logo/logo.jpeg" 
+                alt="AI Chronicle Logo" 
+                className="w-8 h-8 rounded-lg object-cover"
+              />
+              <h2 className="gradient-text text-xl font-bold">AI Chronicle</h2>
+            </div>
             <button 
               className="bg-transparent border-none text-text-secondary cursor-pointer p-2 rounded-lg transition-all duration-300 hover:bg-accent-cyan/10 hover:text-accent-cyan lg:hidden"
               onClick={onClose}
