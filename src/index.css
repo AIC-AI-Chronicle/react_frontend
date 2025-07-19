@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary-bg: #0a0a0f;
+  --color-primary-secondary: #1a1a2e;
+  --color-primary-card: #16213e;
+  --color-accent-cyan: #00d4ff;
+  --color-accent-blue: #4facfe;
+  --color-accent-purple: #8b5cf6;
+  --color-accent-pink: #ec4899;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a0a0a0;
+  --color-text-muted: #6b7280;
+  --color-border: #2d3748;
+  
+  --shadow-glow: 0 0 20px rgba(0, 212, 255, 0.3);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+  
+  body {
+    @apply font-['Inter'] bg-primary-bg text-text-primary leading-relaxed overflow-x-hidden;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .gradient-text {
+    background: linear-gradient(135deg, #00d4ff 0%, #4facfe 25%, #8b5cf6 50%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-border {
+    border: 2px solid transparent;
+    background: linear-gradient(135deg, #00d4ff 0%, #4facfe 25%, #8b5cf6 50%, #ec4899 100%);
+    background-clip: border-box;
+  }
+  
+  .card {
+    @apply bg-primary-card rounded-2xl p-6 shadow-card border border-border transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover hover:border-accent-cyan;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, #00d4ff 0%, #4facfe 25%, #8b5cf6 50%, #ec4899 100%);
+    @apply text-white border-none px-6 py-3 rounded-lg font-semibold cursor-pointer transition-all duration-300 no-underline inline-block hover:-translate-y-0.5;
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .btn-secondary {
+    @apply bg-transparent text-accent-cyan border-2 border-accent-cyan px-5 py-2.5 rounded-lg font-semibold cursor-pointer transition-all duration-300 no-underline inline-block hover:bg-accent-cyan hover:text-primary-bg;
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .nav-link {
+    @apply text-text-secondary no-underline font-medium px-4 py-2 rounded-lg transition-all duration-300 relative hover:text-text-primary hover:bg-accent-cyan/10;
+  }
+  
+  .nav-link::after {
+    content: '';
+    @apply absolute -bottom-0.5 left-1/2 w-0 h-0.5 transition-all duration-300 -translate-x-1/2;
+    background: linear-gradient(135deg, #00d4ff 0%, #4facfe 25%, #8b5cf6 50%, #ec4899 100%);
+  }
+  
+  .nav-link:hover::after {
+    @apply w-4/5;
+  }
+
+  .backdrop-blur-custom {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-primary-secondary;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+    @apply rounded;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #00d4ff 0%, #4facfe 25%, #8b5cf6 50%, #ec4899 100%);
+  }
+}
