@@ -78,9 +78,15 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-black overflow-hidden">
-      {/* Animated Background Grid */}
-      <div className="fixed inset-0 opacity-20">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,136,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,136,0.1)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+      {/* Animated Background Grid + Animated Effects */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 opacity-20 bg-[linear-gradient(rgba(0,255,136,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,136,0.08)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+        {/* Animated gradient overlay */}
+        <div className="animated-gradient"></div>
+        {/* Sparkles */}
+        <div className="absolute left-1/3 top-1/4 w-4 h-4 bg-white/70 rounded-full shadow-lg sparkle"></div>
+        <div className="absolute right-1/4 top-1/3 w-3 h-3 bg-green-400/80 rounded-full shadow-md sparkle"></div>
+        <div className="absolute left-1/2 bottom-1/4 w-2.5 h-2.5 bg-cyan-300/80 rounded-full shadow-md sparkle"></div>
       </div>
 
       {/* Floating Elements */}
