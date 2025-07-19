@@ -19,10 +19,10 @@ function App() {
           {/* Main Content */}
           <main className="flex-1 overflow-y-auto scrollbar-thin">
             <div className="max-w-7xl mx-auto p-6 lg:p-8">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/news/:id" element={<NewsDetail />} />
-              </Routes>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/news/:id" element={<NewsDetail />} />
+            </Routes>
             </div>
           </main>
         </div>

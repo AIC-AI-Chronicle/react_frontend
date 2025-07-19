@@ -2,21 +2,21 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary-bg: #0a0a0f;
-  --color-primary-secondary: #1a1a2e;
-  --color-primary-card: #16213e;
-  --color-accent-cyan: #00d4ff;
-  --color-accent-blue: #4facfe;
-  --color-accent-purple: #8b5cf6;
-  --color-accent-pink: #ec4899;
+  --color-primary-bg: #000000;
+  --color-primary-secondary: #111111;
+  --color-primary-card: #1a1a1a;
+  --color-accent-cyan: #00ff88;
+  --color-accent-blue: #00cc66;
+  --color-accent-purple: #00aa44;
+  --color-accent-pink: #00ff66;
   --color-text-primary: #ffffff;
-  --color-text-secondary: #a0a0a0;
-  --color-text-muted: #6b7280;
-  --color-border: #2d3748;
+  --color-text-secondary: #cccccc;
+  --color-text-muted: #888888;
+  --color-border: #333333;
   
-  --shadow-glow: 0 0 20px rgba(0, 212, 255, 0.3);
-  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
-  --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 20px rgba(0, 255, 136, 0.3);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.6);
 }
 
 @tailwind base;
@@ -39,7 +39,7 @@
 
 @layer components {
   .gradient-text {
-    background: linear-gradient(135deg, #00d4ff 0%, #4facfe 25%, #8b5cf6 50%, #ec4899 100%);
+    background: linear-gradient(135deg, #00ff88 0%, #00cc66 25%, #00aa44 50%, #00ff66 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -47,17 +47,17 @@
   
   .gradient-border {
     border: 2px solid transparent;
-    background: linear-gradient(135deg, #00d4ff 0%, #4facfe 25%, #8b5cf6 50%, #ec4899 100%);
+    background: linear-gradient(135deg, #00ff88 0%, #00cc66 25%, #00aa44 50%, #00ff66 100%);
     background-clip: border-box;
   }
   
   .card {
-    @apply bg-primary-card rounded-2xl p-6 shadow-card border border-border transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover hover:border-accent-cyan;
+    @apply bg-primary-card rounded-xl p-4 shadow-card border border-border transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover hover:border-accent-cyan;
   }
   
   .btn-primary {
-    background: linear-gradient(135deg, #00d4ff 0%, #4facfe 25%, #8b5cf6 50%, #ec4899 100%);
-    @apply text-white border-none px-6 py-3 rounded-lg font-semibold cursor-pointer transition-all duration-300 no-underline inline-block hover:-translate-y-0.5;
+    background: linear-gradient(135deg, #00ff88 0%, #00cc66 25%, #00aa44 50%, #00ff66 100%);
+    @apply text-primary-bg border-none px-6 py-3 rounded-lg font-semibold cursor-pointer transition-all duration-300 no-underline inline-block hover:-translate-y-0.5;
     box-shadow: var(--shadow-glow);
   }
   
@@ -84,6 +84,18 @@
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
   }
+
+  .news-card {
+    @apply bg-primary-card rounded-lg p-4 border border-border transition-all duration-300 hover:border-accent-cyan hover:shadow-lg;
+  }
+
+  .category-badge {
+    @apply bg-accent-cyan/20 text-accent-cyan px-2 py-1 rounded-full text-xs font-medium;
+  }
+
+  .trending-badge {
+    @apply bg-gradient-to-r from-accent-cyan to-accent-blue text-primary-bg px-2 py-1 rounded-full text-xs font-bold;
+  }
 }
 
 @layer utilities {
@@ -100,11 +112,11 @@
   }
   
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+    background: linear-gradient(135deg, #00ff88 0%, #00aa44 100%);
     @apply rounded;
   }
   
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #00d4ff 0%, #4facfe 25%, #8b5cf6 50%, #ec4899 100%);
+    background: linear-gradient(135deg, #00ff88 0%, #00cc66 25%, #00aa44 50%, #00ff66 100%);
   }
 }
