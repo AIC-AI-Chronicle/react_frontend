@@ -78,15 +78,14 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-black overflow-hidden">
-      {/* Animated Background Grid + Animated Effects */}
+      {/* Animated Background Grid + Animated Globe Effects */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 opacity-20 bg-[linear-gradient(rgba(0,255,136,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,136,0.08)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
-        {/* Animated gradient overlay */}
-        <div className="animated-gradient"></div>
-        {/* Sparkles */}
-        <div className="absolute left-1/3 top-1/4 w-4 h-4 bg-white/70 rounded-full shadow-lg sparkle"></div>
-        <div className="absolute right-1/4 top-1/3 w-3 h-3 bg-green-400/80 rounded-full shadow-md sparkle"></div>
-        <div className="absolute left-1/2 bottom-1/4 w-2.5 h-2.5 bg-cyan-300/80 rounded-full shadow-md sparkle"></div>
+        {/* Animated Globe/planet effects */}
+        <div className="absolute top-[-6rem] left-[-6rem] w-[32rem] h-[32rem] bg-gradient-to-br from-green-400/30 via-cyan-400/20 to-transparent rounded-full blur-3xl animate-globe1"></div>
+        <div className="absolute bottom-[-8rem] right-[-8rem] w-[40rem] h-[40rem] bg-gradient-to-tr from-green-500/20 via-blue-400/20 to-transparent rounded-full blur-3xl animate-globe2"></div>
+        <div className="absolute top-1/2 left-1/2 w-[28rem] h-[28rem] bg-gradient-to-br from-green-300/10 via-cyan-300/10 to-transparent rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2 animate-globe3"></div>
+        <div className="absolute top-1/3 right-1/4 w-60 h-60 bg-gradient-to-br from-white/10 to-green-400/10 rounded-full blur-2xl animate-globe4"></div>
       </div>
 
       {/* Floating Elements */}

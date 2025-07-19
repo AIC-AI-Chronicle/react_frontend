@@ -26,21 +26,21 @@ function App() {
         {isAuthenticated ? (
           <>
             <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} onLogout={handleLogout} />
-            <div className="flex h-[calc(100vh-80px)]">
-              {/* Sidebar - Always visible on desktop, overlay on mobile */}
-              <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-              
-              {/* Main Content */}
-              <main className="flex-1 overflow-y-auto scrollbar-thin">
-                <div className="max-w-7xl mx-auto p-6 lg:p-8">
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/news/:id" element={<NewsDetail />} />
+        <div className="flex h-[calc(100vh-80px)]">
+          {/* Sidebar - Always visible on desktop, overlay on mobile */}
+          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+          
+          {/* Main Content */}
+          <main className="flex-1 overflow-y-auto scrollbar-thin">
+            <div className="max-w-7xl mx-auto p-6 lg:p-8">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/news/:id" element={<NewsDetail />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
-                  </Routes>
-                </div>
-              </main>
+            </Routes>
             </div>
+          </main>
+        </div>
           </>
         ) : (
           <Routes>

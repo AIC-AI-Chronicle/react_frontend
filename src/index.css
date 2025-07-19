@@ -44,42 +44,6 @@
 .animate-globe3 { animation: globe3 18s ease-in-out infinite alternate; }
 .animate-globe4 { animation: globe4 14s ease-in-out infinite alternate; }
 
-/* Sparkle animation */
-@keyframes sparkle {
-  0% { opacity: 0.7; transform: scale(1) translateY(0); }
-  50% { opacity: 1; transform: scale(1.2) translateY(-10px); }
-  100% { opacity: 0.7; transform: scale(1) translateY(0); }
-}
-.sparkle {
-  animation: sparkle 3.5s ease-in-out infinite;
-}
-
-/* Rotating ring animation */
-@keyframes rotateRing {
-  0% { transform: rotate(0deg) scale(1); }
-  100% { transform: rotate(360deg) scale(1.04); }
-}
-.animate-rotate-ring {
-  animation: rotateRing 22s linear infinite;
-}
-
-/* Animated gradient overlay */
-@keyframes gradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.animated-gradient {
-  background: linear-gradient(120deg, #00ff88 0%, #00ccff 50%, #00ff88 100%);
-  background-size: 200% 200%;
-  animation: gradientMove 18s ease-in-out infinite;
-  opacity: 0.12;
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
 @layer base {
   * {
     @apply box-border;
