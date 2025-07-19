@@ -7,7 +7,7 @@ function LoadingScreen() {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black transition-opacity duration-700">
       <img
-        src="/logo/logo.jpeg"
+        src="/logo/logo.png"
         alt="AI Chronicle Logo"
         className="w-32 h-32 lg:w-48 lg:h-48 rounded-2xl object-cover shadow-2xl animate-pulse"
       />
@@ -187,12 +187,15 @@ const Landing = () => {
             </div>
 
             {/* Right Side - Visual */}
-            <div className="relative flex justify-center lg:justify-end mt-[-100px] lg:mt-[-160px]">
+            <div className="relative flex justify-center lg:justify-end mt-[-56px] lg:mt-[-80px]">
               <div className="relative z-10">
-                <img 
-                  src="/logo/logo.jpeg" 
-                  alt="AI Chronicle Logo" 
-                  className="w-80 h-80 lg:w-96 lg:h-96 rounded-3xl object-cover shadow-2xl border-4 border-white/10"
+                <video
+                  src="/roboo.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-96 h-96 lg:w-[28rem] lg:h-[28rem] rounded-3xl object-cover shadow-2xl border-4 border-white/10"
                 />
                 
                 {/* Floating Cards */}
