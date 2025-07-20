@@ -47,7 +47,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 alt="AI Chronicle Logo" 
                 className="w-8 h-8 rounded-lg object-cover"
               />
-              <h2 className="gradient-text text-xl font-bold">AI Chronicle</h2>
+            <h2 className="gradient-text text-xl font-bold">AI Chronicle</h2>
             </div>
             <button 
               className="bg-transparent border-none text-text-secondary cursor-pointer p-2 rounded-lg transition-all duration-300 hover:bg-accent-cyan/10 hover:text-accent-cyan lg:hidden"

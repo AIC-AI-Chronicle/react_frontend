@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Header from './components/Header'
 import Home from './pages/Home'
@@ -8,10 +8,26 @@ import Landing from './pages/Landing'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import AdminLogin from './pages/adminlogin'
+import AdminDashboard from './pages/AdminDashboard'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
+
+  // Check authentication status on app load
+  useEffect(() => {
+    const adminToken = localStorage.getItem('admin_token')
+    const userToken = localStorage.getItem('access_token')
+    const isAdminUser = localStorage.getItem('isAdmin')
+    
+    if (adminToken && isAdminUser === 'true') {
+      setIsAuthenticated(true)
+      setIsAdmin(true)
+    } else if (userToken) {
+      setIsAuthenticated(true)
+      setIsAdmin(false)
+    }
+  }, [])
 
   const handleLogin = () => {
     setIsAuthenticated(true)
@@ -43,11 +59,27 @@ function App() {
               <main className="h-full overflow-y-auto scrollbar-thin">
                 <div className="max-w-7xl mx-auto p-6 lg:p-8">
                   <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/news/:id" element={<NewsDetail />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/admin/dashboard" element={<div className="text-white text-center py-20"><h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1><p>Welcome to the admin panel!</p></div>} />
-                    <Route path="*" element={<Navigate to="/" replace />} />
+                    {isAdmin ? (
+                      // Admin routes
+                      <>
+                        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                        <Route path="/admin/users" element={<div className="text-white text-center py-20"><h1 className="text-3xl font-bold mb-4">Admin Users</h1><p>User management panel coming soon!</p></div>} />
+                        <Route path="/admin/news" element={<div className="text-white text-center py-20"><h1 className="text-3xl font-bold mb-4">Admin News</h1><p>News management panel coming soon!</p></div>} />
+                        <Route path="/admin/analytics" element={<div className="text-white text-center py-20"><h1 className="text-3xl font-bold mb-4">Admin Analytics</h1><p>Analytics panel coming soon!</p></div>} />
+                        <Route path="/admin/settings" element={<div className="text-white text-center py-20"><h1 className="text-3xl font-bold mb-4">Admin Settings</h1><p>Settings panel coming soon!</p></div>} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
+                        <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+                      </>
+                    ) : (
+                      // Regular user routes
+                      <>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/news/:id" element={<NewsDetail />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="*" element={<Navigate to="/" replace />} />
+                      </>
+                    )}
                   </Routes>
                 </div>
               </main>
