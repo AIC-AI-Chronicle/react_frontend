@@ -295,7 +295,7 @@ const Home = ({ selectedInterests = [] }) => {
                       ) : (
                         <div className="w-32 h-24 flex items-center justify-center rounded-lg bg-black text-white text-xs font-semibold border border-border flex-shrink-0">
                           Image not available
-                        </div>
+            </div>
                       )}
                       <div className="flex-1">
                         {/* Verification Section */}
@@ -303,7 +303,7 @@ const Home = ({ selectedInterests = [] }) => {
                           <div className="flex items-center gap-2">
                             <img src="/bnb.png" alt="BNB" className="w-5 h-5" />
                             <span className="text-xs text-text-muted">BNB Chain</span>
-                          </div>
+          </div>
                           <div className="flex items-center gap-2">
                             {verificationStatus[article.id] ? (
                               <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
@@ -322,7 +322,7 @@ const Home = ({ selectedInterests = [] }) => {
                                     Not Verified on BNB
                                   </>
                                 )}
-                              </div>
+        </div>
                             ) : (
                               <button
                                 onClick={() => verifyArticle(article.id)}
@@ -342,14 +342,14 @@ const Home = ({ selectedInterests = [] }) => {
                                 )}
                               </button>
                             )}
-                          </div>
-                        </div>
+            </div>
+          </div>
                         <div className="flex items-center gap-2 mb-2">
                           <span className={`bg-gradient-to-r ${getCategoryColor(article.tags?.[0])} text-white px-2 py-1 rounded-full text-xs font-medium`}>
                             {article.tags?.[0] || 'News'}
                           </span>
                           <span className="text-sm text-text-muted">{formatDate(article.published_at)}</span>
-        </div>
+            </div>
                                                                         <h3 className="text-lg font-bold text-text-primary mb-2 group-hover:text-accent-cyan transition-colors duration-300">
                           <a href={article.source} target="_blank" rel="noopener noreferrer" className="hover:underline">
                             {article.title}
