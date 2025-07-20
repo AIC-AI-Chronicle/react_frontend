@@ -11,7 +11,10 @@ import {
   Hash,
   ChevronDown,
   ChevronUp,
-  Copy
+  Copy,
+  Shield,
+  XCircle,
+  AlertTriangle
 } from 'lucide-react'
 
 const AdminNews = () => {
@@ -23,6 +26,8 @@ const AdminNews = () => {
   const [sortBy, setSortBy] = useState('created_at')
   const [sortOrder, setSortOrder] = useState('desc')
   const [expandedArticles, setExpandedArticles] = useState(new Set())
+  const [verificationStatus, setVerificationStatus] = useState({})
+  const [verifyingArticles, setVerifyingArticles] = useState(new Set())
   const [stats, setStats] = useState({
     total: 0,
     successful: 0
@@ -89,6 +94,62 @@ const AdminNews = () => {
   // Copy to clipboard
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text)
+  }
+
+  // Verify article on blockchain
+  const verifyArticle = async (articleId) => {
+    if (verifyingArticles.has(articleId)) return
+    
+    setVerifyingArticles(prev => new Set(prev).add(articleId))
+    
+    try {
+      const adminToken = localStorage.getItem('admin_token')
+      if (!adminToken) {
+        throw new Error('Admin token not found')
+      }
+
+      const response = await fetch(`https://aic-backend.azurewebsites.net/blockchain/articles/${articleId}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setVerificationStatus(prev => ({
+          ...prev,
+          [articleId]: {
+            success: data.success && data.article?.success,
+            verified: data.success && data.article?.success
+          }
+        }))
+      } else {
+        setVerificationStatus(prev => ({
+          ...prev,
+          [articleId]: {
+            success: false,
+            verified: false
+          }
+        }))
+      }
+    } catch (error) {
+      console.error('Error verifying article:', error)
+      setVerificationStatus(prev => ({
+        ...prev,
+        [articleId]: {
+          success: false,
+          verified: false
+        }
+      }))
+    } finally {
+      setVerifyingArticles(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(articleId)
+        return newSet
+      })
+    }
   }
 
   // Format date
@@ -298,6 +359,53 @@ const AdminNews = () => {
                       <span className="bg-purple-500/10 text-purple-400 px-2 py-1 rounded-full text-xs font-medium">
                         Cycle: {article.cycle_number}
                       </span>
+                    </div>
+                    
+                    {/* Verification Section */}
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <img src="/bnb.png" alt="BNB" className="w-5 h-5" />
+                        <span className="text-xs text-text-muted">BNB Chain</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {verificationStatus[article.id] ? (
+                          <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+                            verificationStatus[article.id].verified 
+                              ? 'bg-green-500/20 text-green-400' 
+                              : 'bg-red-500/20 text-red-400'
+                          }`}>
+                            {verificationStatus[article.id].verified ? (
+                              <>
+                                <CheckCircle size={12} />
+                                Verified on BNB
+                              </>
+                            ) : (
+                              <>
+                                <XCircle size={12} />
+                                Not Verified on BNB
+                              </>
+                            )}
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => verifyArticle(article.id)}
+                            disabled={verifyingArticles.has(article.id)}
+                            className="flex items-center gap-1 px-3 py-1 bg-accent-cyan/20 text-accent-cyan rounded-full text-xs font-medium hover:bg-accent-cyan/30 transition-all duration-300 disabled:opacity-50"
+                          >
+                            {verifyingArticles.has(article.id) ? (
+                              <>
+                                <RefreshCw size={12} className="animate-spin" />
+                                Verifying...
+                              </>
+                            ) : (
+                              <>
+                                <Shield size={12} />
+                                Verify
+                              </>
+                            )}
+                          </button>
+                        )}
+                      </div>
                     </div>
                     
                     <h3 className="text-lg font-bold text-text-primary mb-2 line-clamp-2">
