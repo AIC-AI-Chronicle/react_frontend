@@ -1,25 +1,17 @@
 import { useState, useEffect } from 'react'
 import { 
   Search, 
-  Filter, 
-  Download, 
   RefreshCw, 
-  Eye, 
-  Edit, 
-  Trash2, 
   ExternalLink, 
   Calendar, 
   Clock, 
-  AlertTriangle, 
   CheckCircle, 
-  XCircle, 
   Database, 
   Globe, 
   Hash,
   ChevronDown,
   ChevronUp,
-  Copy,
-  Settings
+  Copy
 } from 'lucide-react'
 
 const AdminNews = () => {
@@ -28,15 +20,12 @@ const AdminNews = () => {
   const [error, setError] = useState('')
   const [limit, setLimit] = useState(50)
   const [searchQuery, setSearchQuery] = useState('')
-  const [filterStatus, setFilterStatus] = useState('all')
   const [sortBy, setSortBy] = useState('created_at')
   const [sortOrder, setSortOrder] = useState('desc')
   const [expandedArticles, setExpandedArticles] = useState(new Set())
   const [stats, setStats] = useState({
     total: 0,
-    withErrors: 0,
-    successful: 0,
-    processing: 0
+    successful: 0
   })
 
   // Fetch articles from API
@@ -66,23 +55,9 @@ const AdminNews = () => {
       setArticles(data)
       
       // Calculate stats
-      const errorCount = data.filter(article => 
-        article.authenticity_score?.error || 
-        article.generated_content?.includes('Content generation failed')
-      ).length
-      
-      const successCount = data.filter(article => 
-        !article.authenticity_score?.error && 
-        !article.generated_content?.includes('Content generation failed')
-      ).length
-
       setStats({
         total: data.length,
-        withErrors: errorCount,
-        successful: successCount,
-        processing: data.filter(article => 
-          article.authenticity_score?.error?.includes('429')
-        ).length
+        successful: data.length
       })
 
     } catch (err) {
@@ -123,30 +98,6 @@ const AdminNews = () => {
 
   // Get status badge
   const getStatusBadge = (article) => {
-    if (article.authenticity_score?.error?.includes('429')) {
-      return (
-        <span className="bg-yellow-500/10 text-yellow-400 px-2 py-1 rounded-full text-xs font-medium">
-          Rate Limited
-        </span>
-      )
-    }
-    
-    if (article.authenticity_score?.error) {
-      return (
-        <span className="bg-red-500/10 text-red-400 px-2 py-1 rounded-full text-xs font-medium">
-          Error
-        </span>
-      )
-    }
-    
-    if (article.generated_content?.includes('Content generation failed')) {
-      return (
-        <span className="bg-orange-500/10 text-orange-400 px-2 py-1 rounded-full text-xs font-medium">
-          Failed
-        </span>
-      )
-    }
-    
     return (
       <span className="bg-green-500/10 text-green-400 px-2 py-1 rounded-full text-xs font-medium">
         Success
@@ -159,12 +110,7 @@ const AdminNews = () => {
     const matchesSearch = article.original_title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          article.original_link?.toLowerCase().includes(searchQuery.toLowerCase())
     
-    const matchesFilter = filterStatus === 'all' ||
-                         (filterStatus === 'error' && (article.authenticity_score?.error || article.generated_content?.includes('Content generation failed'))) ||
-                         (filterStatus === 'success' && !article.authenticity_score?.error && !article.generated_content?.includes('Content generation failed')) ||
-                         (filterStatus === 'rate-limited' && article.authenticity_score?.error?.includes('429'))
-    
-    return matchesSearch && matchesFilter
+    return matchesSearch
   })
 
   // Sort articles
@@ -246,29 +192,7 @@ const AdminNews = () => {
           </div>
         </div>
         
-        <div className="card">
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-red-500/10 rounded-lg">
-              <XCircle className="w-6 h-6 text-red-400" />
-            </div>
-            <div>
-              <p className="text-sm text-text-muted">With Errors</p>
-              <p className="text-2xl font-bold text-text-primary">{stats.withErrors}</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="card">
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-yellow-500/10 rounded-lg">
-              <AlertTriangle className="w-6 h-6 text-yellow-400" />
-            </div>
-            <div>
-              <p className="text-sm text-text-muted">Rate Limited</p>
-              <p className="text-2xl font-bold text-text-primary">{stats.processing}</p>
-            </div>
-          </div>
-        </div>
+
       </div>
 
       {/* Controls */}
@@ -309,17 +233,7 @@ const AdminNews = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Filter */}
-            <select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-3 py-2 bg-primary-secondary border border-border rounded-lg text-text-primary text-sm focus:outline-none focus:border-accent-cyan"
-            >
-              <option value="all">All Status</option>
-              <option value="success">Successful</option>
-              <option value="error">With Errors</option>
-              <option value="rate-limited">Rate Limited</option>
-            </select>
+
 
             {/* Sort */}
             <select
@@ -432,20 +346,7 @@ const AdminNews = () => {
                     Copy Link
                   </button>
                   
-                  <button className="flex items-center gap-2 px-3 py-1 bg-primary-secondary text-text-secondary rounded-lg text-sm hover:bg-accent-cyan/10 hover:text-accent-cyan transition-all duration-300">
-                    <Eye size={14} />
-                    Preview
-                  </button>
-                  
-                  <button className="flex items-center gap-2 px-3 py-1 bg-primary-secondary text-text-secondary rounded-lg text-sm hover:bg-accent-cyan/10 hover:text-accent-cyan transition-all duration-300">
-                    <Edit size={14} />
-                    Edit
-                  </button>
-                  
-                  <button className="flex items-center gap-2 px-3 py-1 bg-red-500/10 text-red-400 rounded-lg text-sm hover:bg-red-500 hover:text-white transition-all duration-300">
-                    <Trash2 size={14} />
-                    Delete
-                  </button>
+
                 </div>
 
                 {/* Expanded Content */}
@@ -498,21 +399,7 @@ const AdminNews = () => {
                       </div>
                     </div>
 
-                    {/* Authenticity Score */}
-                    <div>
-                      <h4 className="text-sm font-semibold text-text-primary mb-2">Authenticity Analysis</h4>
-                      <div className="bg-primary-secondary rounded-lg p-4 max-h-40 overflow-y-auto">
-                        {article.authenticity_score?.error ? (
-                          <div className="text-red-400 text-sm">
-                            <strong>Error:</strong> {article.authenticity_score.error}
-                          </div>
-                        ) : (
-                          <pre className="text-sm text-text-secondary whitespace-pre-wrap">
-                            {JSON.stringify(article.authenticity_score, null, 2)}
-                          </pre>
-                        )}
-                      </div>
-                    </div>
+
                   </div>
                 )}
               </div>
