@@ -196,22 +196,7 @@ const Login = ({ onLogin }) => {
             </button>
           </form>
 
-          {/* Divider */}
-          <div className="my-8 flex items-center">
-            <div className="flex-1 border-t border-white/20"></div>
-            <span className="px-4 text-sm text-gray-400">or</span>
-            <div className="flex-1 border-t border-white/20"></div>
-          </div>
 
-          {/* Social Login */}
-          <div className="space-y-3">
-            <button className="w-full bg-white/10 border border-white/20 text-white py-3 px-4 rounded-xl font-medium transition-all duration-300 hover:bg-white/20">
-              Continue with Google
-            </button>
-            <button className="w-full bg-white/10 border border-white/20 text-white py-3 px-4 rounded-xl font-medium transition-all duration-300 hover:bg-white/20">
-              Continue with GitHub
-            </button>
-          </div>
 
           {/* Sign Up Link */}
           <div className="text-center mt-8">
