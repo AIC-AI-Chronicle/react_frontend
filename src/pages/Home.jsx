@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Clock, Eye, Heart, Share2, TrendingUp, Zap, ArrowRight, Bot, Shield, Globe, Database, Cpu, Target, Users, BarChart3, Sparkles, Brain, MessageSquare, Rocket, Scale, Atom, Newspaper, Users2, Building2, Car, Gamepad2, Music, Camera, Briefcase, Heart as HeartIcon, AlertTriangle, Search, Filter, RefreshCw, MoreHorizontal, ChevronDown, ChevronUp, CheckCircle, XCircle } from 'lucide-react'
+import { Clock, Eye, Heart, Share2, TrendingUp, Zap, ArrowRight, Bot, Shield, Globe, Database, Cpu, Target, Users, BarChart3, Sparkles, Brain, MessageSquare, Rocket, Scale, Atom, Newspaper, Users2, Building2, Car, Gamepad2, Music, Camera, Briefcase, Heart as HeartIcon, AlertTriangle, Search, Filter, RefreshCw, MoreHorizontal, ChevronDown, ChevronUp, CheckCircle, XCircle, Info, Copy } from 'lucide-react'
 
 const Home = ({ selectedInterests = [] }) => {
   // API States
@@ -25,7 +25,8 @@ const Home = ({ selectedInterests = [] }) => {
 
   const [trendingTopics] = useState([])
 
- 
+  const [showHashPopup, setShowHashPopup] = useState({ open: false, hash: '', tx: '' })
+  const [copied, setCopied] = useState(false)
 
   // Fetch articles based on interests
   const fetchInterestArticles = async (interests) => {
@@ -522,6 +523,30 @@ const Home = ({ selectedInterests = [] }) => {
                             Source
                     </span>
                   </div>
+                  {article.blockchain_transaction_hash && (
+                    <div className="flex items-center gap-2 mt-2 text-xs text-text-secondary">
+                      <span className="font-semibold">Tx Hash:</span>
+                      <span className="break-all">{article.blockchain_transaction_hash}</span>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(article.blockchain_transaction_hash)
+                          setCopied(true)
+                          setTimeout(() => setCopied(false), 1200)
+                        }}
+                        className="ml-1 p-1 rounded hover:bg-accent-cyan/10 text-accent-cyan"
+                        title="Copy Hash"
+                      >
+                        <Copy size={14} />
+                    </button>
+                      {copied && <span className="text-green-400 ml-1">Copied!</span>}
+                      <button
+                        onClick={() => window.open((article.blockchain_info && article.blockchain_info.explorer_url) ? article.blockchain_info.explorer_url : `https://testnet.bscscan.com/tx/${article.blockchain_transaction_hash}`, '_blank')}
+                        className="ml-2 underline text-accent-cyan hover:text-accent-blue"
+                      >
+                        Verify on BscScan
+                    </button>
+                  </div>
+                  )}
                 </div>
               </div>
             </article>
@@ -575,12 +600,41 @@ const Home = ({ selectedInterests = [] }) => {
         </section>
       )}
 
-
-
-
-
-
-
+      {/* Hash Popup Modal for blockchain_transaction_hash */}
+      {showHashPopup.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <div className="bg-primary-card p-6 rounded-xl shadow-lg max-w-xs w-full relative">
+            <button
+              className="absolute top-2 right-2 text-text-muted hover:text-accent-cyan"
+              onClick={() => setShowHashPopup({ open: false, hash: '', tx: '' })}
+            >
+              ✕
+            </button>
+            <h4 className="text-lg font-bold mb-2 text-text-primary">Blockchain Tx Hash</h4>
+            <div className="break-all text-xs bg-primary-secondary p-3 rounded-lg border border-border text-text-secondary flex items-center justify-between gap-2">
+              <span>{showHashPopup.hash}</span>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(showHashPopup.hash)
+                  setCopied(true)
+                  setTimeout(() => setCopied(false), 1200)
+                }}
+                className="ml-2 p-1 rounded hover:bg-accent-cyan/10 text-accent-cyan"
+                title="Copy Hash"
+              >
+                <Copy size={16} />
+              </button>
+            </div>
+            {copied && <div className="text-xs text-green-400 mt-1">Copied!</div>}
+            <button
+              onClick={() => window.open(`https://testnet.bscscan.com/tx/${showHashPopup.tx}`, '_blank')}
+              className="mt-4 w-full text-xs text-accent-cyan underline hover:text-accent-blue transition-colors"
+            >
+              Verify on BscScan
+                </button>
+          </div>
+        </div>
+      )}
 
     </div>
   )
