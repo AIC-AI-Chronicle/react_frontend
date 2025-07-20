@@ -12,7 +12,7 @@ import {
   MessageSquare, 
   Globe, 
   Database, 
-  Shield,
+  Shield, 
   AlertTriangle,
   CheckCircle,
   Clock,
@@ -35,10 +35,15 @@ const AdminDashboard = () => {
   const [isConnecting, setIsConnecting] = useState(false)
   const [serverLogs, setServerLogs] = useState([])
   const [stats, setStats] = useState({
-    totalUsers: 1247,
-    totalArticles: 3456,
-    activeConnections: 0,
-    systemHealth: 'Excellent',
+    total_articles: 0,
+    articles_today: 0,
+    pipeline_running: false,
+    active_connections: 0,
+    running_pipelines: 0,
+    recent_activity: {
+      articles_today: 0,
+      total_articles: 0
+    },
     lastUpdate: new Date().toLocaleTimeString()
   })
   const [recentActivity, setRecentActivity] = useState([])
@@ -60,6 +65,41 @@ const AdminDashboard = () => {
   const reconnectTimeoutRef = useRef(null)
   const pingIntervalRef = useRef(null)
   const countdownIntervalRef = useRef(null)
+  const statsIntervalRef = useRef(null)
+
+  // Fetch dashboard stats from API
+  const fetchDashboardStats = async () => {
+    try {
+      const adminToken = localStorage.getItem('admin_token')
+      if (!adminToken) {
+        addServerLog('ERROR', 'No admin token found for stats fetch', 'error')
+        return
+      }
+
+      const response = await fetch('https://aic-backend.azurewebsites.net/admin/dashboard/stats', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      setStats(prev => ({
+        ...data,
+        lastUpdate: new Date().toLocaleTimeString()
+      }))
+      
+      addServerLog('INFO', 'Dashboard stats updated successfully', 'info')
+    } catch (error) {
+      addServerLog('ERROR', `Failed to fetch dashboard stats: ${error.message}`, 'error')
+      console.error('Error fetching dashboard stats:', error)
+    }
+  }
 
   // Start Agency Pipeline
   const startPipeline = async () => {
@@ -107,7 +147,7 @@ const AdminDashboard = () => {
   const stopPipeline = async () => {
     setIsStoppingPipeline(true)
     try {
-      const adminToken = localStorage.getItem('admin_token')
+    const adminToken = localStorage.getItem('admin_token')
       if (!adminToken) {
         addServerLog('ERROR', 'No admin token found. Please login again.', 'error')
         return
@@ -438,6 +478,24 @@ const AdminDashboard = () => {
     }
   }
 
+  // Initial fetch and periodic stats updates
+  useEffect(() => {
+    // Initial stats fetch
+    fetchDashboardStats()
+    
+    // Set up periodic stats updates every 30 seconds
+    statsIntervalRef.current = setInterval(() => {
+      fetchDashboardStats()
+    }, 30000)
+    
+    // Cleanup on unmount
+    return () => {
+      if (statsIntervalRef.current) {
+        clearInterval(statsIntervalRef.current)
+      }
+    }
+  }, [])
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -450,6 +508,9 @@ const AdminDashboard = () => {
       if (countdownIntervalRef.current) {
         clearInterval(countdownIntervalRef.current)
       }
+      if (statsIntervalRef.current) {
+        clearInterval(statsIntervalRef.current)
+      }
       if (wsRef.current) {
         wsRef.current.close()
       }
@@ -459,12 +520,12 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-primary-bg p-6">
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
+      {/* Header */}
+          <div className="flex items-center justify-between">
+              <div>
             <h1 className="text-3xl font-bold text-text-primary mb-2">Admin Dashboard</h1>
             <p className="text-text-secondary">AI Chronicle Administration Panel</p>
-          </div>
+              </div>
           <div className="flex items-center gap-4">
             {/* Connection Status */}
             <div className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
@@ -562,9 +623,9 @@ const AdminDashboard = () => {
                     Start Agency
                   </>
                 )}
-              </button>
-            </div>
+            </button>
           </div>
+        </div>
         </div>
 
         {/* Stats Grid */}
@@ -572,20 +633,8 @@ const AdminDashboard = () => {
           <div className="card">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-text-muted text-sm">Total Users</p>
-                <p className="text-2xl font-bold text-text-primary">{stats.totalUsers.toLocaleString()}</p>
-              </div>
-              <div className="p-3 bg-blue-500/10 rounded-lg">
-                <Users className="w-6 h-6 text-blue-400" />
-              </div>
-            </div>
-          </div>
-          
-          <div className="card">
-            <div className="flex items-center justify-between">
-              <div>
                 <p className="text-text-muted text-sm">Total Articles</p>
-                <p className="text-2xl font-bold text-text-primary">{stats.totalArticles.toLocaleString()}</p>
+                <p className="text-2xl font-bold text-text-primary">{stats.total_articles.toLocaleString()}</p>
               </div>
               <div className="p-3 bg-green-500/10 rounded-lg">
                 <Newspaper className="w-6 h-6 text-green-400" />
@@ -596,11 +645,11 @@ const AdminDashboard = () => {
           <div className="card">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-text-muted text-sm">Active Connections</p>
-                <p className="text-2xl font-bold text-text-primary">{stats.activeConnections}</p>
+                <p className="text-text-muted text-sm">Articles Today</p>
+                <p className="text-2xl font-bold text-text-primary">{stats.articles_today.toLocaleString()}</p>
               </div>
-              <div className="p-3 bg-cyan-500/10 rounded-lg">
-                <Activity className="w-6 h-6 text-accent-cyan" />
+              <div className="p-3 bg-blue-500/10 rounded-lg">
+                <TrendingUp className="w-6 h-6 text-blue-400" />
               </div>
             </div>
           </div>
@@ -608,11 +657,23 @@ const AdminDashboard = () => {
           <div className="card">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-text-muted text-sm">System Health</p>
-                <p className="text-2xl font-bold text-text-primary">{stats.systemHealth}</p>
+                <p className="text-text-muted text-sm">Active Connections</p>
+                <p className="text-2xl font-bold text-text-primary">{stats.active_connections}</p>
               </div>
               <div className="p-3 bg-purple-500/10 rounded-lg">
-                <Shield className="w-6 h-6 text-purple-400" />
+                <Globe className="w-6 h-6 text-purple-400" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="card">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-text-muted text-sm">Running Pipelines</p>
+                <p className="text-2xl font-bold text-text-primary">{stats.running_pipelines}</p>
+              </div>
+              <div className="p-3 bg-orange-500/10 rounded-lg">
+                <Power className="w-6 h-6 text-orange-400" />
               </div>
             </div>
           </div>
@@ -757,7 +818,7 @@ const AdminDashboard = () => {
               <div>
                 <p className="font-medium text-text-primary">Settings</p>
                 <p className="text-sm text-text-muted">System configuration</p>
-              </div>
+                </div>
             </Link>
           </div>
         </div>
@@ -778,21 +839,21 @@ const AdminDashboard = () => {
                 }`}>
                   {systemStatus.charAt(0).toUpperCase() + systemStatus.slice(1)}
                 </span>
-              </div>
+                </div>
               <div className="flex items-center justify-between">
                 <span className="text-text-secondary">Pipeline Status</span>
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                  isPipelineRunning 
+                  stats.pipeline_running 
                     ? 'bg-green-500/10 text-green-400' 
                     : 'bg-gray-500/10 text-gray-400'
                 }`}>
-                  {isPipelineRunning ? 'Running' : 'Stopped'}
+                  {stats.pipeline_running ? 'Running' : 'Stopped'}
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-text-secondary">Last Update</span>
                 <span className="text-text-primary text-sm">{stats.lastUpdate}</span>
-              </div>
+                </div>
               <div className="flex items-center justify-between">
                 <span className="text-text-secondary">Ping Count</span>
                 <span className="text-text-primary text-sm">{pingCount}</span>
@@ -800,21 +861,21 @@ const AdminDashboard = () => {
               <div className="flex items-center justify-between">
                 <span className="text-text-secondary">Log Entries</span>
                 <span className="text-text-primary text-sm">{logCount}</span>
-              </div>
+                </div>
               <div className="flex items-center justify-between">
                 <span className="text-text-secondary">Connection Type</span>
                 <span className="text-text-primary text-sm">WebSocket</span>
               </div>
             </div>
           </div>
-          
+
           <div className="card">
             <h2 className="text-xl font-bold text-text-primary mb-4">Connection Info</h2>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-text-secondary">Server URL</span>
                 <span className="text-text-primary text-sm">wss://aic-backend.azurewebsites.net</span>
-              </div>
+                </div>
               <div className="flex items-center justify-between">
                 <span className="text-text-secondary">Endpoint</span>
                 <span className="text-text-primary text-sm">/ws/admin</span>
@@ -822,7 +883,7 @@ const AdminDashboard = () => {
               <div className="flex items-center justify-between">
                 <span className="text-text-secondary">Protocol</span>
                 <span className="text-text-primary text-sm">WebSocket</span>
-              </div>
+                </div>
               <div className="flex items-center justify-between">
                 <span className="text-text-secondary">Auto Reconnect</span>
                 <span className="text-text-primary text-sm">Enabled</span>
