@@ -386,8 +386,8 @@ const Home = ({ selectedInterests = [] }) => {
                             <Globe size={14} />
                             Source
                           </span>
-                        </div>
-                        
+          </div>
+
                         {/* Blockchain Transaction Hash */}
                         {article.blockchain_transaction_hash && (
                           <div className="flex items-center gap-2 mt-2 text-xs text-text-secondary">
@@ -411,7 +411,7 @@ const Home = ({ selectedInterests = [] }) => {
                             >
                               Verify on BscScan
                             </button>
-                          </div>
+            </div>
                         )}
           </div>
             </div>

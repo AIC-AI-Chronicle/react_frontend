@@ -40,38 +40,38 @@ const Landing = () => {
   const features = [
     {
       icon: Bot,
-      title: "AI-Powered Intelligence",
-      description: "Advanced machine learning algorithms analyze thousands of sources in real-time, delivering the most relevant and accurate AI news.",
+      title: "Agentic AI Autonomy",
+      description: "Every news task is handled by decentralized, intelligent agents—no human intervention, just pure AI-driven journalism.",
       color: "from-cyan-500 to-blue-600"
     },
     {
-      icon: TrendingUp,
-      title: "Real-Time Analytics",
-      description: "Stay ahead with instant notifications and comprehensive analytics on emerging AI trends and breakthrough technologies.",
-      color: "from-blue-500 to-cyan-600"
+      icon: Globe,
+      title: "Decentralized on BNB Chain",
+      description: "Our newsroom is powered and secured by the BNB Chain, ensuring transparency, immutability, and trust in every article.",
+      color: "from-yellow-400 to-cyan-600"
     },
     {
-      icon: Shield,
-      title: "Verified & Trusted",
-      description: "Every piece of content undergoes rigorous fact-checking through multiple verified sources for maximum reliability.",
+      icon: Zap,
+      title: "Fully Automated Newsroom",
+      description: "From sourcing to publishing, every process is automated by a network of AI agents for 24/7, unbiased news delivery.",
       color: "from-purple-500 to-pink-600"
     }
   ]
 
   const stats = [
-    { label: "Daily Articles", value: "500+", icon: BarChart3 },
-    { label: "Global Sources", value: "200+", icon: Globe },
-    { label: "Active Users", value: "50K+", icon: Users },
-    { label: "Accuracy Rate", value: "99.7%", icon: Shield }
+    { label: "Autonomous Agents", value: "100+", icon: Bot },
+    { label: "BNB Chain Secured", value: "100%", icon: Globe },
+    { label: "Human Involvement", value: "0", icon: Shield },
+    { label: "Decentralized Nodes", value: "50+", icon: Layers }
   ]
 
   const benefits = [
-    "Real-time AI news updates",
-    "Expert-curated content",
-    "Multi-source verification",
-    "Personalized insights",
-    "Advanced analytics",
-    "Mobile-first design"
+    "Decentralized & Trustless News",
+    "Agentic AI Operations",
+    "Immutable Blockchain Records",
+    "Zero Human Bias",
+    "24/7 Automated Coverage",
+    "Built on BNB Chain"
   ]
 
   if (loading) return <LoadingScreen />
@@ -142,16 +142,16 @@ const Landing = () => {
             {/* Left Side - Content */}
             <div className="space-y-10 mt-[-32px] lg:mt-[-48px]">
               <div className="space-y-6">
-                <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-                  <span className="text-white">The Future of</span>
-                  <span className="block bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 bg-clip-text text-transparent">
-                    AI News
+                <h1 className="text-5xl lg:text-7xl font-bold leading-tight">   
+                  <span className="block bg-gradient-to-r from-cyan-400 via-yellow-400 to-cyan-600 bg-clip-text text-transparent">
+                    Decentralized, Autonomous AI News Agency
                   </span>
                 </h1>
-                
+                <div className="inline-block bg-yellow-400/10 border border-yellow-400/30 text-yellow-300 text-xs font-semibold px-3 py-1 rounded-full mb-2 animate-pulse">
+                  Built by Team Porotta Pythoners @ BNB Hack Kochi
+                </div>
                 <p className="text-xl text-gray-300 leading-relaxed max-w-lg">
-                  Experience cutting-edge AI journalism that delivers real-time insights, breakthrough discoveries, 
-                  and comprehensive analysis from the world's leading researchers.
+                  100% autonomous, agentic AI curates, verifies, and publishes news—decentralized on BNB Chain for trust, transparency, and unstoppable journalism.
                 </p>
               </div>
 
@@ -311,7 +311,8 @@ const Landing = () => {
               <span className="text-white font-semibold">AI Chronicle</span>
             </div>
             <div className="flex items-center gap-6 text-sm text-gray-400">
-              <span>© 2024 AI Chronicle. All rights reserved.</span>
+              <span>© 2025 AI Chronicle. All rights reserved.</span>
+              <span className="text-yellow-300 font-semibold">Built by Team Porotta Pythoners @ BNB Hack Kochi</span>
               <Link to="/privacy" className="hover:text-cyan-400 transition-colors duration-300">Privacy</Link>
               <Link to="/terms" className="hover:text-cyan-400 transition-colors duration-300">Terms</Link>
             </div>
