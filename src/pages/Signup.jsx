@@ -109,7 +109,7 @@ const Signup = ({ onSignup }) => {
             <div className="flex justify-center mb-6">
               <div className="relative">
                 <img 
-                  src="/logo/logo.jpeg" 
+                  src="/logo/logo.png" 
                   alt="AI Chronicle Logo" 
                   className="w-16 h-16 rounded-xl object-cover"
                 />

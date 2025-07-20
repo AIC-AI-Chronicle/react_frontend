@@ -101,11 +101,10 @@ const Landing = () => {
           <Link to="/" className="flex items-center gap-3 group">
             <div className="relative">
               <img 
-                src="/logo/logo.jpeg" 
+                src="/logo/logo.png" 
                 alt="AI Chronicle Logo" 
-                className="w-12 h-12 rounded-xl object-cover transition-all duration-300 group-hover:scale-110"
+                className="w-15 h-15 rounded-xl object-cover transition-all duration-300 group-hover:scale-110"
               />
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full animate-ping"></div>
             </div>
             <div>
               <span className="text-xl font-bold text-white group-hover:text-green-400 transition-colors duration-300">AI Chronicle</span>
@@ -310,7 +309,7 @@ const Landing = () => {
             <div className="flex items-center gap-3">
               <div className="relative">
                 <img 
-                  src="/logo/logo.jpeg" 
+                  src="/logo/logo.png" 
                   alt="AI Chronicle Logo" 
                   className="w-10 h-10 rounded-lg object-cover"
                 />

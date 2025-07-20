@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Menu, Search, Bell, User, Bot, Database } from 'lucide-react'
+import { Search, Bell, User, Bot, Database } from 'lucide-react'
 
-const Header = ({ onMenuClick, onLogout }) => {
+const Header = ({ onLogout }) => {
   const [searchQuery, setSearchQuery] = useState('')
 
   return (
@@ -10,16 +10,10 @@ const Header = ({ onMenuClick, onLogout }) => {
       <div className="w-full max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between gap-6">
         {/* Logo Section */}
         <div className="flex items-center gap-4">
-          <button 
-            className="bg-transparent border-none text-text-primary cursor-pointer p-2 rounded-lg transition-all duration-300 hover:bg-accent-cyan/10 hover:text-accent-cyan lg:hidden"
-            onClick={onMenuClick}
-          >
-            <Menu size={24} />
-          </button>
           <Link to="/" className="no-underline flex items-center">
             <div className="flex items-center gap-3">
               <img 
-                src="/logo/logo.jpeg" 
+                src="/logo/logo.png" 
                 alt="AI Chronicle Logo" 
                 className="w-12 h-12 rounded-lg object-cover shadow-lg border-2 border-accent-cyan/20"
               />
@@ -46,7 +40,7 @@ const Header = ({ onMenuClick, onLogout }) => {
             <Search size={20} className="absolute left-3 text-text-muted pointer-events-none" />
             <input
               type="text"
-              placeholder="Search AI news..."
+              placeholder="Search news..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="bg-primary-card border border-border rounded-lg py-2.5 pl-10 pr-3 text-text-primary text-sm w-64 transition-all duration-300 focus:outline-none focus:border-accent-cyan focus:shadow-[0_0_0_3px_rgba(0,212,255,0.1)] placeholder:text-text-muted"

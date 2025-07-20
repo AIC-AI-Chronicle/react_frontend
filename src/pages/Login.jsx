@@ -87,13 +87,13 @@ const Login = ({ onLogin }) => {
             <div className="flex justify-center mb-6">
               <div className="relative">
                 <img 
-                  src="/logo/logo.jpeg" 
+                  src="/logo/logo.png" 
                   alt="AI Chronicle Logo" 
-                  className="w-16 h-16 rounded-xl object-cover"
+                  className="w-20 h-20 rounded-xl object-cover"
                 />
-                <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-green-400 to-green-500 rounded-full flex items-center justify-center">
-                  <Bot className="w-4 h-4 text-white" />
-                </div>
+                {/* <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-green-400 to-green-500 rounded-full flex items-center justify-center">
+                    
+                </div> */}
               </div>
             </div>
             <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>

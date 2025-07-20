@@ -1,27 +1,27 @@
 import { Link } from 'react-router-dom'
-import { X, Home, TrendingUp, Clock, Grid, Settings, Bookmark, Zap } from 'lucide-react'
+import { X, Home, TrendingUp, Clock, Grid, Settings, Bookmark, Zap, Building2, Cpu, Briefcase, Gamepad2, Music, Heart, Atom, Users2 } from 'lucide-react'
 
 const Sidebar = ({ isOpen, onClose }) => {
   const categories = [
-    { name: 'Machine Learning', icon: '🤖', count: 45 },
-    { name: 'Deep Learning', icon: '🧠', count: 32 },
-    { name: 'Natural Language Processing', icon: '💬', count: 28 },
-    { name: 'Computer Vision', icon: '👁️', count: 23 },
-    { name: 'Robotics', icon: '🤖', count: 19 },
-    { name: 'AI Ethics', icon: '⚖️', count: 15 },
-    { name: 'Quantum AI', icon: '⚛️', count: 12 },
-    { name: 'AI Startups', icon: '🚀', count: 38 }
+    { name: 'Politics', icon: Building2, count: 156 },
+    { name: 'Technology', icon: Cpu, count: 234 },
+    { name: 'Business', icon: Briefcase, count: 189 },
+    { name: 'Sports', icon: Gamepad2, count: 145 },
+    { name: 'Entertainment', icon: Music, count: 167 },
+    { name: 'Health', icon: Heart, count: 123 },
+    { name: 'Science', icon: Atom, count: 98 },
+    { name: 'Society', icon: Users2, count: 201 }
   ]
 
   const trendingTopics = [
-    'GPT-5 Release',
-    'AI Regulation',
-    'Quantum Computing',
-    'Autonomous Vehicles',
-    'AI in Healthcare',
-    'Neural Networks',
-    'AI Safety',
-    'Machine Learning'
+    'Climate Action',
+    'Tech Innovation',
+    'Economic Recovery',
+    'Space Exploration',
+    'Healthcare Breakthroughs',
+    'Education Reform',
+    'Social Justice',
+    'Digital Privacy'
   ]
 
   return (
@@ -43,7 +43,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           <div className="flex items-center justify-between p-6 border-b border-border">
             <div className="flex items-center gap-3">
               <img 
-                src="/logo/logo.jpeg" 
+                src="/logo/logo.png" 
                 alt="AI Chronicle Logo" 
                 className="w-8 h-8 rounded-lg object-cover"
               />
@@ -98,7 +98,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                   onClick={onClose}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-lg">{category.icon}</span>
+                    <category.icon size={20} />
                     <span className="font-medium">{category.name}</span>
                   </div>
                   <span className="bg-accent-cyan/20 text-accent-cyan px-2 py-1 rounded-full text-xs font-medium">
