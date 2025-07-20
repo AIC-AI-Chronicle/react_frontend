@@ -60,6 +60,7 @@ const AdminDashboard = () => {
   const [isStoppingPipeline, setIsStoppingPipeline] = useState(false)
   const [isClearingLogs, setIsClearingLogs] = useState(false)
   const [clearKey, setClearKey] = useState(0)
+  const [loading, setLoading] = useState(false)
   
   const wsRef = useRef(null)
   const reconnectTimeoutRef = useRef(null)
@@ -69,6 +70,7 @@ const AdminDashboard = () => {
 
   // Fetch dashboard stats from API
   const fetchDashboardStats = async () => {
+    setLoading(true)
     try {
       const adminToken = localStorage.getItem('admin_token')
       if (!adminToken) {
@@ -98,6 +100,8 @@ const AdminDashboard = () => {
     } catch (error) {
       addServerLog('ERROR', `Failed to fetch dashboard stats: ${error.message}`, 'error')
       console.error('Error fetching dashboard stats:', error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -125,14 +129,21 @@ const AdminDashboard = () => {
       const data = await response.json()
 
       if (response.ok) {
+        const countdownSeconds = pipelineDuration * 60 // Convert to seconds
         setIsPipelineRunning(true)
         setPipelineId(data.pipeline_id)
-        setPipelineCountdown(pipelineDuration * 60) // Convert to seconds
+        setPipelineCountdown(countdownSeconds)
         addServerLog('SUCCESS', `Pipeline started for ${pipelineDuration} minutes`, 'success')
         addServerLog('INFO', `Pipeline ID: ${data.pipeline_id}`, 'info')
+        addServerLog('INFO', `Countdown initialized to ${countdownSeconds} seconds`, 'info')
         
         // Start countdown timer
         startCountdownTimer()
+        
+        // Fetch updated dashboard stats to reflect pipeline status
+        setTimeout(() => {
+          fetchDashboardStats()
+        }, 1000) // Wait 1 second for backend to update
       } else {
         addServerLog('ERROR', `Failed to start pipeline: ${data.detail || 'Unknown error'}`, 'error')
       }
@@ -169,6 +180,11 @@ const AdminDashboard = () => {
         setPipelineCountdown(0)
         addServerLog('SUCCESS', 'Pipeline stopped successfully', 'success')
         stopCountdownTimer()
+        
+        // Fetch updated dashboard stats to reflect pipeline status
+        setTimeout(() => {
+          fetchDashboardStats()
+        }, 1000) // Wait 1 second for backend to update
       } else {
         addServerLog('WARNING', `Pipeline stop response: ${data.detail || 'Unknown response'}`, 'warning')
       }
@@ -181,18 +197,32 @@ const AdminDashboard = () => {
 
   // Start countdown timer
   const startCountdownTimer = () => {
+    // Clear any existing timer first
+    if (countdownIntervalRef.current) {
+      clearInterval(countdownIntervalRef.current)
+    }
+    
     countdownIntervalRef.current = setInterval(() => {
       setPipelineCountdown(prev => {
+        console.log('Countdown tick:', prev) // Debug log
         if (prev <= 1) {
           setIsPipelineRunning(false)
           setPipelineId(null)
           addServerLog('INFO', 'Pipeline completed automatically', 'info')
           stopCountdownTimer()
+          
+          // Fetch updated dashboard stats when pipeline completes
+          setTimeout(() => {
+            fetchDashboardStats()
+          }, 1000)
+          
           return 0
         }
         return prev - 1
       })
     }, 1000)
+    
+    addServerLog('INFO', `Countdown timer started for ${pipelineCountdown} seconds`, 'info')
   }
 
   // Stop countdown timer
@@ -496,6 +526,33 @@ const AdminDashboard = () => {
     }
   }, [])
 
+  // Sync local pipeline state with API data
+  useEffect(() => {
+    // Update local pipeline state based on API data
+    if (stats.pipeline_running !== isPipelineRunning) {
+      setIsPipelineRunning(stats.pipeline_running)
+      
+      // If API shows pipeline is not running but local state thinks it is, stop countdown
+      if (!stats.pipeline_running && isPipelineRunning) {
+        stopCountdownTimer()
+        setPipelineCountdown(0)
+        setPipelineId(null)
+        addServerLog('INFO', 'Pipeline stopped by API - countdown cleared', 'info')
+      }
+    }
+  }, [stats.pipeline_running, isPipelineRunning])
+
+  // Ensure countdown timer is properly managed
+  useEffect(() => {
+    // If pipeline is running but countdown is 0, restart timer
+    if ((isPipelineRunning || stats.pipeline_running) && pipelineCountdown === 0) {
+      const countdownSeconds = pipelineDuration * 60
+      setPipelineCountdown(countdownSeconds)
+      startCountdownTimer()
+      addServerLog('INFO', `Countdown restarted for ${countdownSeconds} seconds`, 'info')
+    }
+  }, [isPipelineRunning, stats.pipeline_running, pipelineCountdown, pipelineDuration])
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -527,6 +584,16 @@ const AdminDashboard = () => {
             <p className="text-text-secondary">AI Chronicle Administration Panel</p>
               </div>
           <div className="flex items-center gap-4">
+            {/* Refresh Stats Button */}
+            <button
+              onClick={fetchDashboardStats}
+              disabled={loading}
+              className="flex items-center gap-2 px-3 py-2 bg-accent-cyan/10 text-accent-cyan rounded-lg hover:bg-accent-cyan hover:text-primary-bg transition-all duration-300 disabled:opacity-50"
+            >
+              <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
+              <span className="text-sm font-medium">Refresh Stats</span>
+            </button>
+            
             {/* Connection Status */}
             <div className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
               isConnected 
@@ -585,7 +652,7 @@ const AdminDashboard = () => {
               </div>
 
               {/* Countdown Timer */}
-              {isPipelineRunning && (
+              {(isPipelineRunning || stats.pipeline_running) && pipelineCountdown > 0 && (
                 <div className="flex items-center gap-2 px-3 py-1 bg-green-500/10 text-green-400 rounded-lg">
                   <Clock size={14} />
                   <span className="text-sm font-mono">{formatCountdown(pipelineCountdown)}</span>
@@ -629,7 +696,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           <div className="card">
             <div className="flex items-center justify-between">
               <div>
@@ -669,11 +736,31 @@ const AdminDashboard = () => {
           <div className="card">
             <div className="flex items-center justify-between">
               <div>
+                <p className="text-text-muted text-sm">Pipeline Status</p>
+                <p className={`text-2xl font-bold ${
+                  stats.pipeline_running ? 'text-green-400' : 'text-red-400'
+                }`}>
+                  {stats.pipeline_running ? 'Running' : 'Stopped'}
+                </p>
+              </div>
+              <div className={`p-3 rounded-lg ${
+                stats.pipeline_running ? 'bg-green-500/10' : 'bg-red-500/10'
+              }`}>
+                <Power className={`w-6 h-6 ${
+                  stats.pipeline_running ? 'text-green-400' : 'text-red-400'
+                }`} />
+              </div>
+            </div>
+          </div>
+          
+          <div className="card">
+            <div className="flex items-center justify-between">
+              <div>
                 <p className="text-text-muted text-sm">Running Pipelines</p>
                 <p className="text-2xl font-bold text-text-primary">{stats.running_pipelines}</p>
               </div>
               <div className="p-3 bg-orange-500/10 rounded-lg">
-                <Power className="w-6 h-6 text-orange-400" />
+                <Activity className="w-6 h-6 text-orange-400" />
               </div>
             </div>
           </div>

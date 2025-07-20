@@ -67,7 +67,6 @@ function App() {
                         <Route path="/admin/dashboard" element={<AdminDashboard />} />
                         <Route path="/admin/users" element={<AdminUsers />} />
                         <Route path="/admin/news" element={<AdminNews />} />
-                        <Route path="/admin/analytics" element={<div className="text-white text-center py-20"><h1 className="text-3xl font-bold mb-4">Admin Analytics</h1><p>Analytics panel coming soon!</p></div>} />
                         <Route path="/admin/settings" element={<div className="text-white text-center py-20"><h1 className="text-3xl font-bold mb-4">Admin Settings</h1><p>Settings panel coming soon!</p></div>} />
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />

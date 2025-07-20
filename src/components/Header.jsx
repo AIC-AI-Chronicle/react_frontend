@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Search, Bell, User, Bot, Database, Shield, LogOut, Settings } from 'lucide-react'
+import { Search, User, Bot, Database, LogOut, Settings } from 'lucide-react'
 
 const Header = ({ onLogout, isAdmin }) => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -46,7 +46,6 @@ const Header = ({ onLogout, isAdmin }) => {
               <Link to="/admin/dashboard" className="nav-link">Dashboard</Link>
               <Link to="/admin/users" className="nav-link">Users</Link>
               <Link to="/admin/news" className="nav-link">News</Link>
-              <Link to="/admin/analytics" className="nav-link">Analytics</Link>
             </>
           ) : (
             <>
@@ -73,10 +72,6 @@ const Header = ({ onLogout, isAdmin }) => {
           </div>
           
           <div className="flex gap-2">
-            <button className="bg-transparent border border-border text-text-secondary p-2 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-center hover:bg-accent-cyan/10 hover:border-accent-cyan hover:text-accent-cyan">
-              <Bell size={20} />
-            </button>
-            
             {/* Profile Dropdown */}
             <div className="relative">
               <button 
@@ -130,14 +125,6 @@ const Header = ({ onLogout, isAdmin }) => {
                 </>
               )}
             </div>
-            
-            <button className={`p-2 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-center ${
-              isAdmin 
-                ? 'bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500 hover:text-white'
-                : 'bg-accent-cyan/10 border border-accent-cyan/20 text-accent-cyan hover:bg-accent-cyan hover:text-primary-bg'
-            }`}>
-              {isAdmin ? <Shield size={20} /> : <Database size={20} />}
-            </button>
           </div>
         </div>
       </div>
