@@ -1,9 +1,19 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Search, Bell, User, Bot, Database } from 'lucide-react'
+import { Search, Bell, User, Bot, Database, Shield, LogOut, Settings } from 'lucide-react'
 
-const Header = ({ onLogout }) => {
+const Header = ({ onLogout, isAdmin }) => {
   const [searchQuery, setSearchQuery] = useState('')
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false)
+
+  const handleProfileClick = () => {
+    setShowProfileDropdown(!showProfileDropdown)
+  }
+
+  const handleLogout = () => {
+    setShowProfileDropdown(false)
+    onLogout()
+  }
 
   return (
     <header className="bg-primary-secondary/95 backdrop-blur-custom border-b border-border sticky top-0 z-50 h-20 flex items-center">
@@ -18,8 +28,12 @@ const Header = ({ onLogout }) => {
                 className="w-12 h-12 rounded-lg object-cover shadow-lg border-2 border-accent-cyan/20"
               />
               <div className="hidden sm:block">
-                <div className="text-sm text-accent-cyan font-medium">AI Chronicle</div>
-                <div className="text-xs text-text-muted">Powered by AI</div>
+                <div className="text-sm text-accent-cyan font-medium">
+                  AI Chronicle {isAdmin && <span className="text-red-400">Admin</span>}
+                </div>
+                <div className="text-xs text-text-muted">
+                  {isAdmin ? 'Administrator Panel' : 'Powered by AI'}
+                </div>
               </div>
             </div>
           </Link>
@@ -27,11 +41,22 @@ const Header = ({ onLogout }) => {
 
         {/* Navigation */}
         <nav className="hidden lg:flex gap-8 items-center">
-          <Link to="/" className="nav-link">Home</Link>
-          <Link to="/latest" className="nav-link">Latest</Link>
-          <Link to="/trending" className="nav-link">Trending</Link>
-          <Link to="/categories" className="nav-link">Categories</Link>
-          <Link to="/about" className="nav-link">About</Link>
+          {isAdmin ? (
+            <>
+              <Link to="/admin/dashboard" className="nav-link">Dashboard</Link>
+              <Link to="/admin/users" className="nav-link">Users</Link>
+              <Link to="/admin/news" className="nav-link">News</Link>
+              <Link to="/admin/analytics" className="nav-link">Analytics</Link>
+            </>
+          ) : (
+            <>
+              <Link to="/" className="nav-link">Home</Link>
+              <Link to="/latest" className="nav-link">Latest</Link>
+              <Link to="/trending" className="nav-link">Trending</Link>
+              <Link to="/categories" className="nav-link">Categories</Link>
+              <Link to="/about" className="nav-link">About</Link>
+            </>
+          )}
         </nav>
 
         {/* Search and Actions */}
@@ -40,7 +65,7 @@ const Header = ({ onLogout }) => {
             <Search size={20} className="absolute left-3 text-text-muted pointer-events-none" />
             <input
               type="text"
-              placeholder="Search news..."
+              placeholder={isAdmin ? "Search admin panel..." : "Search news..."}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="bg-primary-card border border-border rounded-lg py-2.5 pl-10 pr-3 text-text-primary text-sm w-64 transition-all duration-300 focus:outline-none focus:border-accent-cyan focus:shadow-[0_0_0_3px_rgba(0,212,255,0.1)] placeholder:text-text-muted"
@@ -51,14 +76,67 @@ const Header = ({ onLogout }) => {
             <button className="bg-transparent border border-border text-text-secondary p-2 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-center hover:bg-accent-cyan/10 hover:border-accent-cyan hover:text-accent-cyan">
               <Bell size={20} />
             </button>
-            <button 
-              onClick={onLogout}
-              className="bg-transparent border border-border text-text-secondary p-2 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-center hover:bg-accent-cyan/10 hover:border-accent-cyan hover:text-accent-cyan"
-            >
-              <User size={20} />
-            </button>
-            <button className="bg-accent-cyan/10 border border-accent-cyan/20 text-accent-cyan p-2 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-center hover:bg-accent-cyan hover:text-primary-bg">
-              <Database size={20} />
+            
+            {/* Profile Dropdown */}
+            <div className="relative">
+              <button 
+                onClick={handleProfileClick}
+                className="bg-transparent border border-border text-text-secondary p-2 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-center hover:bg-accent-cyan/10 hover:border-accent-cyan hover:text-accent-cyan"
+              >
+                <User size={20} />
+              </button>
+              
+              {/* Dropdown Menu */}
+              {showProfileDropdown && (
+                <>
+                  {/* Backdrop */}
+                  <div 
+                    className="fixed inset-0 z-40"
+                    onClick={() => setShowProfileDropdown(false)}
+                  ></div>
+                  
+                  {/* Dropdown Content */}
+                  <div className="absolute right-0 top-12 w-48 bg-primary-card border border-border rounded-xl shadow-lg z-50 overflow-hidden">
+                    <div className="p-2">
+                      <Link 
+                        to="/profile"
+                        onClick={() => setShowProfileDropdown(false)}
+                        className="flex items-center gap-3 w-full px-3 py-2 text-text-secondary hover:text-text-primary hover:bg-accent-cyan/10 rounded-lg transition-all duration-300"
+                      >
+                        <User size={16} />
+                        <span>Profile</span>
+                      </Link>
+                      
+                      <Link 
+                        to="/settings"
+                        onClick={() => setShowProfileDropdown(false)}
+                        className="flex items-center gap-3 w-full px-3 py-2 text-text-secondary hover:text-text-primary hover:bg-accent-cyan/10 rounded-lg transition-all duration-300"
+                      >
+                        <Settings size={16} />
+                        <span>Settings</span>
+                      </Link>
+                      
+                      <div className="border-t border-border my-1"></div>
+                      
+                      <button 
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 w-full px-3 py-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-all duration-300"
+                      >
+                        <LogOut size={16} />
+                        <span>Logout</span>
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+            
+            <button className={`p-2 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-center ${
+              isAdmin 
+                ? 'bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500 hover:text-white'
+                : 'bg-accent-cyan/10 border border-accent-cyan/20 text-accent-cyan hover:bg-accent-cyan hover:text-primary-bg'
+            }`}>
+              {isAdmin ? <Shield size={20} /> : <Database size={20} />}
             </button>
           </div>
         </div>

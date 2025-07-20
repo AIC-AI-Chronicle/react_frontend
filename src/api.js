@@ -19,3 +19,12 @@ export async function login({ email, password }) {
   if (!res.ok) throw new Error("Login failed");
   return res.json();
 } 
+export async function adminLogin({ email, password }) {
+  const res = await fetch(`${BASE_URL}/admin/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+  if (!res.ok) throw new Error("Admin login failed");
+  return res.json();
+} 

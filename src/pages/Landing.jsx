@@ -120,6 +120,12 @@ const Landing = () => {
               Login
             </Link>
             <Link 
+              to="/admin/login" 
+              className="text-white/80 hover:text-white transition-all duration-300 hover:scale-105"
+            >
+              Admin
+            </Link>
+            <Link 
               to="/signup" 
               className="bg-gradient-to-r from-cyan-500 to-cyan-600 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:from-cyan-600 hover:to-cyan-700 hover:scale-105 shadow-lg hover:shadow-cyan-500/25"
             >
