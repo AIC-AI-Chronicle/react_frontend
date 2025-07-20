@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Header from './components/Header'
+import Sidebar from './components/Sidebar'
 import Home from './pages/Home'
 import NewsDetail from './pages/NewsDetail'
 import Profile from './pages/Profile'
@@ -15,6 +16,10 @@ import AdminUsers from './pages/AdminUsers'
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [popularInterests, setPopularInterests] = useState([])
+  const [selectedInterests, setSelectedInterests] = useState([])
+  const [loadingInterests, setLoadingInterests] = useState(false)
 
   // Check authentication status on app load
   useEffect(() => {
@@ -52,15 +57,79 @@ function App() {
     setIsAdmin(true)
   }
 
+  // Fetch popular interests
+  const fetchPopularInterests = async () => {
+    if (isAdmin) return
+    
+    setLoadingInterests(true)
+    try {
+      const userToken = localStorage.getItem('access_token')
+      if (!userToken) {
+        console.log('No user token found')
+        return
+      }
+
+      const response = await fetch('https://aic-backend.azurewebsites.net/user/articles/interests', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${userToken}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setPopularInterests(data.popular_interests || [])
+      } else {
+        console.log('Failed to fetch popular interests')
+      }
+    } catch (error) {
+      console.error('Error fetching popular interests:', error)
+    } finally {
+      setLoadingInterests(false)
+    }
+  }
+
+  // Handle interest selection (single selection only)
+  const handleInterestToggle = (interest) => {
+    setSelectedInterests(prev => {
+      // If clicking the same interest, deselect it
+      if (prev.includes(interest)) {
+        return []
+      }
+      // Otherwise, select only this interest (replace any previous selection)
+      else {
+        return [interest]
+      }
+    })
+  }
+
+  // Fetch interests when user is authenticated and not admin
+  useEffect(() => {
+    if (isAuthenticated && !isAdmin) {
+      fetchPopularInterests()
+    }
+  }, [isAuthenticated, isAdmin])
+
   return (
     <Router>
       <div className="h-screen bg-primary-bg overflow-hidden">
         {isAuthenticated ? (
           <>
             <Header onLogout={handleLogout} isAdmin={isAdmin} />
-            <div className="h-[calc(100vh-80px)]">
-              {/* Main Content - Full width without sidebar */}
-              <main className="h-full overflow-y-auto scrollbar-thin">
+            <div className="h-[calc(100vh-80px)] flex">
+              {!isAdmin && (
+                <Sidebar 
+                  isOpen={sidebarOpen}
+                  onClose={() => setSidebarOpen(false)}
+                  popularInterests={popularInterests}
+                  selectedInterests={selectedInterests}
+                  onInterestToggle={handleInterestToggle}
+                  loadingInterests={loadingInterests}
+                />
+              )}
+              {/* Main Content */}
+              <main className={`h-full overflow-y-auto scrollbar-thin ${!isAdmin ? 'flex-1' : 'w-full'}`}>
                 <div className="max-w-7xl mx-auto p-6 lg:p-8">
                   <Routes>
                     {isAdmin ? (
@@ -75,9 +144,9 @@ function App() {
                         <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
                       </>
                     ) : (
-                    
+                      // Regular user routes
                       <>
-                        <Route path="/" element={<Home />} />
+                        <Route path="/" element={<Home selectedInterests={selectedInterests} />} />
                         <Route path="/news/:id" element={<NewsDetail />} />
                         <Route path="/profile" element={<Profile />} />
                         <Route path="*" element={<Navigate to="/" replace />} />
