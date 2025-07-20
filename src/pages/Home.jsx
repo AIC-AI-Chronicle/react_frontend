@@ -285,6 +285,18 @@ const Home = ({ selectedInterests = [] }) => {
                 {searchResults.map((article) => (
                   <article key={article.id} className="card group">
                     <div className="flex items-start gap-4">
+                      {/* Article Image */}
+                      {article.image_url ? (
+                        <img
+                          src={article.image_url}
+                          alt={article.title}
+                          className="w-32 h-24 object-cover rounded-lg flex-shrink-0 bg-primary-secondary border border-border"
+                        />
+                      ) : (
+                        <div className="w-32 h-24 flex items-center justify-center rounded-lg bg-black text-white text-xs font-semibold border border-border flex-shrink-0">
+                          Image not available
+                        </div>
+                      )}
                       <div className="flex-1">
                         {/* Verification Section */}
                         <div className="flex items-center justify-between mb-3">
@@ -409,6 +421,18 @@ const Home = ({ selectedInterests = [] }) => {
                 {interestArticles.map((article) => (
                   <article key={article.id} className="card group">
                     <div className="flex items-start gap-4">
+                      {/* Article Image */}
+                      {article.image_url ? (
+                        <img
+                          src={article.image_url}
+                          alt={article.title}
+                          className="w-32 h-24 object-cover rounded-lg flex-shrink-0 bg-primary-secondary border border-border"
+                        />
+                      ) : (
+                        <div className="w-32 h-24 flex items-center justify-center rounded-lg bg-black text-white text-xs font-semibold border border-border flex-shrink-0">
+                          Image not available
+                        </div>
+                      )}
                       <div className="flex-1">
                         {/* Verification Section */}
                         <div className="flex items-center justify-between mb-3">
