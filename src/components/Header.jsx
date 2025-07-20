@@ -1,10 +1,67 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Search, User, Bot, Database, LogOut, Settings } from 'lucide-react'
+import { Search, User, Bot, Database, LogOut, Settings, Shield } from 'lucide-react'
 
 const Header = ({ onLogout, isAdmin }) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [showProfileDropdown, setShowProfileDropdown] = useState(false)
+  const [adminProfile, setAdminProfile] = useState(null)
+  const [loadingProfile, setLoadingProfile] = useState(false)
+  
+  // Fetch admin profile
+  const fetchAdminProfile = async () => {
+    if (!isAdmin) return
+    
+    setLoadingProfile(true)
+    try {
+      const adminToken = localStorage.getItem('admin_token')
+      if (!adminToken) {
+        console.log('No admin token found')
+        return
+      }
+
+      const response = await fetch('https://aic-backend.azurewebsites.net/profile', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setAdminProfile(data)
+        // Store admin name in localStorage for future use
+        localStorage.setItem('admin_name', data.full_name)
+      } else {
+        console.log('Failed to fetch admin profile')
+      }
+    } catch (error) {
+      console.error('Error fetching admin profile:', error)
+    } finally {
+      setLoadingProfile(false)
+    }
+  }
+
+  // Fetch profile on component mount if admin
+  useEffect(() => {
+    if (isAdmin) {
+      fetchAdminProfile()
+    }
+  }, [isAdmin])
+  
+  // Get admin name from profile or localStorage
+  const getAdminName = () => {
+    if (isAdmin) {
+      if (adminProfile?.full_name) {
+        return adminProfile.full_name
+      }
+      const adminName = localStorage.getItem('admin_name')
+      const adminEmail = localStorage.getItem('admin_email')
+      return adminName || adminEmail || 'Administrator'
+    }
+    return ''
+  }
 
   const handleProfileClick = () => {
     setShowProfileDropdown(!showProfileDropdown)
@@ -71,7 +128,24 @@ const Header = ({ onLogout, isAdmin }) => {
             />
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
+            {/* Admin Name Display */}
+            {isAdmin && (
+              <div className="hidden md:flex items-center gap-2 px-3 py-1 bg-accent-cyan/10 border border-accent-cyan/20 rounded-lg">
+                <Shield size={14} className="text-accent-cyan" />
+                <span className="text-sm font-medium text-accent-cyan">
+                  {loadingProfile ? (
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-3 border border-accent-cyan/30 border-t-accent-cyan rounded-full animate-spin"></div>
+                      Loading...
+                    </div>
+                  ) : (
+                    getAdminName()
+                  )}
+                </span>
+              </div>
+            )}
+            
             {/* Profile Dropdown */}
             <div className="relative">
               <button 

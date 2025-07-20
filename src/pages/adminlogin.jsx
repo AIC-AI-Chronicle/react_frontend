@@ -61,6 +61,7 @@ const AdminLogin = ({ onAdminLogin }) => {
       localStorage.setItem('admin_token', data.access_token)
       localStorage.setItem('user_type', data.user_type)
       localStorage.setItem('isAdmin', 'true')
+      localStorage.setItem('admin_email', formData.email)
       setIsLoading(false)
       onAdminLogin()
       navigate('/admin/dashboard')

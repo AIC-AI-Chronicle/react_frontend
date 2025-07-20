@@ -43,6 +43,8 @@ function App() {
     localStorage.removeItem('admin_token')
     localStorage.removeItem('user_type')
     localStorage.removeItem('isAdmin')
+    localStorage.removeItem('admin_email')
+    localStorage.removeItem('admin_name')
   }
 
   const handleAdminLogin = () => {

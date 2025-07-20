@@ -36,6 +36,7 @@ const AdminUsers = () => {
   const [sortBy, setSortBy] = useState('created_at')
   const [sortOrder, setSortOrder] = useState('desc')
   const [expandedUsers, setExpandedUsers] = useState(new Set())
+  const [togglingUsers, setTogglingUsers] = useState(new Set())
   const [stats, setStats] = useState({
     total: 0,
     admins: 0,
@@ -113,6 +114,61 @@ const AdminUsers = () => {
   // Copy to clipboard
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text)
+  }
+
+  // Toggle user active status
+  const toggleUserActive = async (userId, currentStatus) => {
+    setTogglingUsers(prev => new Set(prev).add(userId))
+    setError('')
+    
+    try {
+      const adminToken = localStorage.getItem('admin_token')
+      if (!adminToken) {
+        throw new Error('Admin token not found')
+      }
+
+      const response = await fetch(`https://aic-backend.azurewebsites.net/admin/users/${userId}/toggle-active`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      
+      // Update the user's active status in the local state
+      setUsers(prevUsers => 
+        prevUsers.map(user => 
+          user.id === userId 
+            ? { ...user, is_active: !user.is_active }
+            : user
+        )
+      )
+      
+      // Update stats
+      setStats(prevStats => ({
+        ...prevStats,
+        active: currentStatus ? prevStats.active - 1 : prevStats.active + 1,
+        inactive: currentStatus ? prevStats.inactive + 1 : prevStats.inactive - 1
+      }))
+
+      console.log('Toggle response:', data.message)
+      
+    } catch (err) {
+      setError(err.message || 'Failed to toggle user status')
+      console.error('Error toggling user status:', err)
+    } finally {
+      setTogglingUsers(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(userId)
+        return newSet
+      })
+    }
   }
 
   // Format date
@@ -442,14 +498,30 @@ const AdminUsers = () => {
                   </button>
                   
                   {user.is_active ? (
-                    <button className="flex items-center gap-2 px-3 py-1 bg-orange-500/10 text-orange-400 rounded-lg text-sm hover:bg-orange-500 hover:text-white transition-all duration-300">
-                      <Lock size={14} />
-                      Deactivate
+                    <button 
+                      onClick={() => toggleUserActive(user.id, true)}
+                      disabled={togglingUsers.has(user.id)}
+                      className="flex items-center gap-2 px-3 py-1 bg-orange-500/10 text-orange-400 rounded-lg text-sm hover:bg-orange-500 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {togglingUsers.has(user.id) ? (
+                        <RefreshCw size={14} className="animate-spin" />
+                      ) : (
+                        <Lock size={14} />
+                      )}
+                      {togglingUsers.has(user.id) ? 'Deactivating...' : 'Deactivate'}
                     </button>
                   ) : (
-                    <button className="flex items-center gap-2 px-3 py-1 bg-green-500/10 text-green-400 rounded-lg text-sm hover:bg-green-500 hover:text-white transition-all duration-300">
-                      <Unlock size={14} />
-                      Activate
+                    <button 
+                      onClick={() => toggleUserActive(user.id, false)}
+                      disabled={togglingUsers.has(user.id)}
+                      className="flex items-center gap-2 px-3 py-1 bg-green-500/10 text-green-400 rounded-lg text-sm hover:bg-green-500 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {togglingUsers.has(user.id) ? (
+                        <RefreshCw size={14} className="animate-spin" />
+                      ) : (
+                        <Unlock size={14} />
+                      )}
+                      {togglingUsers.has(user.id) ? 'Activating...' : 'Activate'}
                     </button>
                   )}
                   
