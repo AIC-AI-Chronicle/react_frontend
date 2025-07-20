@@ -1,8 +1,78 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Clock, Eye, Heart, Share2, TrendingUp, Zap, ArrowRight, Bot, Shield, Globe, Database, Cpu, Target, Users, BarChart3, Sparkles, Brain, MessageSquare, Rocket, Scale, Atom, Newspaper, Users2, Building2, Car, Gamepad2, Music, Camera, Briefcase, Heart as HeartIcon } from 'lucide-react'
+import { Clock, Eye, Heart, Share2, TrendingUp, Zap, ArrowRight, Bot, Shield, Globe, Database, Cpu, Target, Users, BarChart3, Sparkles, Brain, MessageSquare, Rocket, Scale, Atom, Newspaper, Users2, Building2, Car, Gamepad2, Music, Camera, Briefcase, Heart as HeartIcon, Play, AlertTriangle } from 'lucide-react'
 
 const Home = () => {
+  const [youtubeNews] = useState([
+    {
+      id: 1,
+      title: "Breaking: Major Tech Conference Live Coverage",
+      channel: "Tech News Daily",
+      views: "125K",
+      duration: "15:32",
+      thumbnail: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=225&fit=crop",
+      videoId: "abc123",
+      category: "Technology"
+    },
+    {
+      id: 2,
+      title: "Global Economic Summit: Live Updates",
+      channel: "Business Insider",
+      views: "89K",
+      duration: "22:15",
+      thumbnail: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=225&fit=crop",
+      videoId: "def456",
+      category: "Business"
+    },
+    {
+      id: 3,
+      title: "Space Mission Launch: Real-time Coverage",
+      channel: "Science Channel",
+      views: "156K",
+      duration: "18:47",
+      thumbnail: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=400&h=225&fit=crop",
+      videoId: "ghi789",
+      category: "Science"
+    },
+    {
+      id: 4,
+      title: "Sports Championship: Final Match Highlights",
+      channel: "Sports Central",
+      views: "234K",
+      duration: "12:33",
+      thumbnail: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=225&fit=crop",
+      videoId: "jkl012",
+      category: "Sports"
+    }
+  ])
+
+  const [importantNews] = useState([
+    {
+      id: 1,
+      title: "URGENT: Global Cybersecurity Alert - Major Data Breach Affects Millions",
+      excerpt: "Security experts warn of unprecedented cyber attack targeting financial institutions worldwide. Immediate action required.",
+      category: "Security",
+      priority: "critical",
+      time: "5 minutes ago"
+    },
+    {
+      id: 2,
+      title: "BREAKING: Natural Disaster Response - Emergency Services Mobilized",
+      excerpt: "Major earthquake strikes coastal region. Emergency response teams deployed. Evacuation orders issued for affected areas.",
+      category: "Emergency",
+      priority: "high",
+      time: "12 minutes ago"
+    },
+    {
+      id: 3,
+      title: "ALERT: Health Crisis Update - New Medical Guidelines Released",
+      excerpt: "World Health Organization issues critical health guidelines. Hospitals worldwide implementing new protocols immediately.",
+      category: "Health",
+      priority: "high",
+      time: "25 minutes ago"
+    }
+  ])
+
   const [featuredNews] = useState([
     {
       id: 1,
@@ -158,13 +228,13 @@ const Home = () => {
 
   const [categories] = useState([
     { name: "Politics", count: 156, icon: Building2, color: "from-red-400 to-red-600" },
-    { name: "Technology", count: 234, icon: Cpu, color: "from-blue-400 to-blue-600" },
-    { name: "Business", count: 189, icon: Briefcase, color: "from-green-400 to-green-600" },
+    { name: "Technology", count: 234, icon: Cpu, color: "from-cyan-400 to-cyan-600" },
+    { name: "Business", count: 189, icon: Briefcase, color: "from-blue-400 to-blue-600" },
     { name: "Sports", count: 145, icon: Gamepad2, color: "from-orange-400 to-orange-600" },
     { name: "Entertainment", count: 167, icon: Music, color: "from-purple-400 to-purple-600" },
     { name: "Health", count: 123, icon: HeartIcon, color: "from-pink-400 to-pink-600" },
-    { name: "Science", count: 98, icon: Atom, color: "from-cyan-400 to-cyan-600" },
-    { name: "Society", count: 201, icon: Users2, color: "from-indigo-400 to-indigo-600" }
+    { name: "Science", count: 98, icon: Atom, color: "from-indigo-400 to-indigo-600" },
+    { name: "Society", count: 201, icon: Users2, color: "from-teal-400 to-teal-600" }
   ])
 
   const [stats] = useState([
@@ -176,72 +246,88 @@ const Home = () => {
 
   return (
     <div className="space-y-12">
-      {/* Hero Section - Fixed Background */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900 via-black to-green-900 p-8 lg:p-16 text-white border border-gray-800">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-blue-500/5"></div>
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-green-500/10 to-green-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-green-400/10 to-green-500/10 rounded-full blur-2xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-green-500/5 to-green-600/5 rounded-full blur-3xl"></div>
+      {/* Important News Alerts */}
+      <section>
+        <div className="flex items-center gap-2 mb-6">
+          <AlertTriangle className="w-6 h-6 text-red-500" />
+          <h2 className="text-2xl font-bold text-text-primary">Important Alerts</h2>
+        </div>
         
-        <div className="relative z-10 max-w-6xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center gap-12">
-            {/* Logo and Brand Section */}
-            <div className="flex-1 text-center lg:text-left">
-              <div className="flex justify-center lg:justify-start mb-8">
-                <div className="relative">
-                  <img 
-                    src="/logo/logo.png" 
-                    alt="AI Chronicle Logo" 
-                    className="w-32 h-32 lg:w-40 lg:h-40 rounded-2xl object-cover shadow-2xl border-4 border-white/20"
-                  />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-green-400 to-green-500 rounded-full flex items-center justify-center">
-                    <Bot className="w-5 h-5 text-white" />
+        <div className="space-y-4">
+          {importantNews.map((news) => (
+            <div key={news.id} className={`card border-l-4 ${
+              news.priority === 'critical' ? 'border-l-red-500 bg-red-500/5' : 'border-l-orange-500 bg-orange-500/5'
+            }`}>
+              <div className="flex items-start gap-4">
+                <div className={`p-2 rounded-full ${
+                  news.priority === 'critical' ? 'bg-red-500/20 text-red-500' : 'bg-orange-500/20 text-orange-500'
+                }`}>
+                  <AlertTriangle size={20} />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                      news.priority === 'critical' ? 'bg-red-500 text-white' : 'bg-orange-500 text-white'
+                    }`}>
+                      {news.priority === 'critical' ? 'CRITICAL' : 'HIGH PRIORITY'}
+                    </span>
+                    <span className="text-sm text-text-muted">{news.time}</span>
                   </div>
+                  <h3 className="text-lg font-bold text-text-primary mb-2">{news.title}</h3>
+                  <p className="text-text-secondary">{news.excerpt}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* YouTube News Section */}
+      <section>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-2">
+            <Play className="w-6 h-6 text-red-500" />
+            <h2 className="text-3xl font-bold text-text-primary">Live News Videos</h2>
+          </div>
+          <Link to="/videos" className="text-accent-cyan hover:text-accent-blue transition-colors duration-300">
+            View All Videos
+          </Link>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {youtubeNews.map((video) => (
+            <div key={video.id} className="card group cursor-pointer">
+              <div className="relative mb-4 overflow-hidden rounded-xl">
+                <img 
+                  src={video.thumbnail} 
+                  alt={video.title}
+                  className="w-full h-32 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <Play className="w-12 h-12 text-white" />
+                </div>
+                <div className="absolute bottom-2 right-2 bg-black/80 text-white px-2 py-1 rounded text-xs">
+                  {video.duration}
+                </div>
+                <div className="absolute top-2 left-2">
+                  <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                    {video.category}
+                  </span>
                 </div>
               </div>
               
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                <span className="text-white">AI</span>
-                <span className="block bg-gradient-to-r from-green-400 via-green-500 to-green-600 bg-clip-text text-transparent">
-                  Chronicle
-                </span>
-              </h1>
-              
-              <p className="text-xl lg:text-2xl mb-8 text-gray-300 max-w-2xl leading-relaxed">
-                Your gateway to the latest global news, innovations, and insights. 
-                Stay informed with comprehensive coverage across all topics and industries.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Link to="/latest" className="inline-flex items-center gap-3 bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:from-green-600 hover:to-green-700 hover:scale-105 shadow-lg">
-                  Explore News
-                  <ArrowRight size={24} />
-                </Link>
-                <button className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:bg-white/20 hover:scale-105">
-                  <Globe className="w-5 h-5" />
-                  Live Updates
-                </button>
+              <div className="space-y-2">
+                <h3 className="text-lg font-bold text-text-primary group-hover:text-accent-cyan transition-colors duration-300 line-clamp-2">
+                  {video.title}
+                </h3>
+                <p className="text-text-muted text-sm">{video.channel}</p>
+                <div className="flex items-center gap-2 text-sm text-text-muted">
+                  <Eye size={14} />
+                  <span>{video.views} views</span>
+                </div>
               </div>
             </div>
-
-            {/* Stats Section */}
-            <div className="flex-1">
-              <div className="grid grid-cols-2 gap-6">
-                {stats.map((stat, index) => (
-                  <div key={index} className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="p-2 bg-gradient-to-r from-green-500 to-green-600 rounded-lg">
-                        <stat.icon className="w-6 h-6 text-white" />
-                      </div>
-                      <h3 className="text-2xl font-bold text-white">{stat.value}</h3>
-                    </div>
-                    <p className="text-gray-300 text-sm font-medium">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 

@@ -94,7 +94,7 @@ const Signup = ({ onSignup }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-green-900 flex items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-cyan-900 flex items-center justify-center px-6 py-12">
       <div className="w-full max-w-md">
         <Link 
           to="/" 
@@ -113,7 +113,7 @@ const Signup = ({ onSignup }) => {
                   alt="AI Chronicle Logo" 
                   className="w-16 h-16 rounded-xl object-cover"
                 />
-                <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-green-400 to-green-500 rounded-full flex items-center justify-center">
+                <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-cyan-400 to-cyan-500 rounded-full flex items-center justify-center">
                   <Bot className="w-4 h-4 text-white" />
                 </div>
               </div>
@@ -142,7 +142,7 @@ const Signup = ({ onSignup }) => {
                   className={`w-full px-4 py-3 bg-white/10 border rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 ${
                     errors.firstName 
                       ? 'border-red-500 focus:ring-red-500/50' 
-                      : 'border-white/20 focus:border-green-500 focus:ring-green-500/50'
+                      : 'border-white/20 focus:border-cyan-500 focus:ring-cyan-500/50'
                   }`}
                   placeholder="John"
                 />
@@ -164,7 +164,7 @@ const Signup = ({ onSignup }) => {
                   className={`w-full px-4 py-3 bg-white/10 border rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 ${
                     errors.lastName 
                       ? 'border-red-500 focus:ring-red-500/50' 
-                      : 'border-white/20 focus:border-green-500 focus:ring-green-500/50'
+                      : 'border-white/20 focus:border-cyan-500 focus:ring-cyan-500/50'
                   }`}
                   placeholder="Doe"
                 />
@@ -184,11 +184,11 @@ const Signup = ({ onSignup }) => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                                  className={`w-full px-4 py-3 bg-white/10 border rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 ${
-                    errors.email 
-                      ? 'border-red-500 focus:ring-red-500/50' 
-                      : 'border-white/20 focus:border-green-500 focus:ring-green-500/50'
-                  }`}
+                className={`w-full px-4 py-3 bg-white/10 border rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 ${
+                  errors.email 
+                    ? 'border-red-500 focus:ring-red-500/50' 
+                    : 'border-white/20 focus:border-cyan-500 focus:ring-cyan-500/50'
+                }`}
                 placeholder="john@example.com"
               />
               {errors.email && (
@@ -210,7 +210,7 @@ const Signup = ({ onSignup }) => {
                   className={`w-full px-4 py-3 bg-white/10 border rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 pr-12 ${
                     errors.password 
                       ? 'border-red-500 focus:ring-red-500/50' 
-                      : 'border-white/20 focus:border-green-500 focus:ring-green-500/50'
+                      : 'border-white/20 focus:border-cyan-500 focus:ring-cyan-500/50'
                   }`}
                   placeholder="Create a strong password"
                 />
@@ -241,7 +241,7 @@ const Signup = ({ onSignup }) => {
                   className={`w-full px-4 py-3 bg-white/10 border rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 pr-12 ${
                     errors.confirmPassword 
                       ? 'border-red-500 focus:ring-red-500/50' 
-                      : 'border-white/20 focus:border-green-500 focus:ring-green-500/50'
+                      : 'border-white/20 focus:border-cyan-500 focus:ring-cyan-500/50'
                   }`}
                   placeholder="Confirm your password"
                 />
@@ -260,12 +260,12 @@ const Signup = ({ onSignup }) => {
 
             <div>
               <label className="flex items-start gap-3">
-                                  <input
-                    type="checkbox"
-                    checked={agreedToTerms}
-                    onChange={(e) => setAgreedToTerms(e.target.checked)}
-                    className="w-4 h-4 text-green-500 bg-white/10 border-white/20 rounded focus:ring-green-500 focus:ring-2 mt-1"
-                  />
+                <input
+                  type="checkbox"
+                  checked={agreedToTerms}
+                  onChange={(e) => setAgreedToTerms(e.target.checked)}
+                  className="w-4 h-4 text-cyan-500 bg-white/10 border-white/20 rounded focus:ring-cyan-500 focus:ring-2 mt-1"
+                />
                 <span className="text-sm text-gray-300">
                   I agree to the Terms of Service and Privacy Policy
                 </span>
@@ -278,7 +278,7 @@ const Signup = ({ onSignup }) => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-300 hover:from-green-600 hover:to-green-700 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
+              className="w-full bg-gradient-to-r from-cyan-500 to-cyan-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-300 hover:from-cyan-600 hover:to-cyan-700 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
             >
               {isLoading ? (
                 <div className="flex items-center justify-center gap-2">
@@ -311,7 +311,7 @@ const Signup = ({ onSignup }) => {
               Already have an account?{' '}
               <Link 
                 to="/login" 
-                className="text-green-400 hover:text-green-300 font-semibold transition-colors duration-300"
+                className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors duration-300"
               >
                 Sign in
               </Link>
