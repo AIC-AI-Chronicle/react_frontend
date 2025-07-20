@@ -386,7 +386,33 @@ const Home = ({ selectedInterests = [] }) => {
                             <Globe size={14} />
                             Source
                           </span>
-            </div>
+                        </div>
+                        
+                        {/* Blockchain Transaction Hash */}
+                        {article.blockchain_transaction_hash && (
+                          <div className="flex items-center gap-2 mt-2 text-xs text-text-secondary">
+                            <span className="font-semibold">Tx Hash:</span>
+                            <span className="break-all">{article.blockchain_transaction_hash}</span>
+                            <button
+                              onClick={() => {
+                                navigator.clipboard.writeText(article.blockchain_transaction_hash)
+                                setCopied(true)
+                                setTimeout(() => setCopied(false), 1200)
+                              }}
+                              className="ml-1 p-1 rounded hover:bg-accent-cyan/10 text-accent-cyan"
+                              title="Copy Hash"
+                            >
+                              <Copy size={14} />
+                            </button>
+                            {copied && <span className="text-green-400 ml-1">Copied!</span>}
+                            <button
+                              onClick={() => window.open((article.blockchain_info && article.blockchain_info.explorer_url) ? article.blockchain_info.explorer_url : `https://testnet.bscscan.com/tx/${article.blockchain_transaction_hash}`, '_blank')}
+                              className="ml-2 underline text-accent-cyan hover:text-accent-blue"
+                            >
+                              Verify on BscScan
+                            </button>
+                          </div>
+                        )}
           </div>
             </div>
                   </article>
